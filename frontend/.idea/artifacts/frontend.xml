@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="frontend">
+    <output-path>$PROJECT_DIR$/out/artifacts/frontend</output-path>
+    <root id="root">
+      <element id="dir-copy" path="$PROJECT_DIR$/dist" />
+    </root>
+  </artifact>
+</component>
