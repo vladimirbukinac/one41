@@ -15,8 +15,10 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
-  ])
+    'ngTouch',
+    'mTop',
+    'mBottom'
+  ]);/*
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -30,4 +32,4 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  });
+  });*/
