@@ -7,7 +7,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserDaoImpl extends GenericDaoImpl<User, String> implements UserDao {
+public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
     @Override
     public User authenticateUser(String username, String password) {

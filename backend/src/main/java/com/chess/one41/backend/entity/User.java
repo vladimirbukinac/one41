@@ -3,6 +3,8 @@ package com.chess.one41.backend.entity;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -13,7 +15,8 @@ public class User {
     public static final String PASSWORD = "password";
 
     @Id
-    private String id;
+    @GeneratedValue
+    private Long id;
 
     private String username;
 
@@ -27,11 +30,11 @@ public class User {
 
     private String pictureUrl;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

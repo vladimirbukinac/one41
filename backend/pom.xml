@@ -31,6 +31,12 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
 
 		<!-- Persistence Management -->
 		<dependency> <!-- MySQL database driver -->
@@ -82,6 +88,7 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.9.5</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Log4J -->
@@ -90,6 +97,14 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+
+        <!-- H2 database for DAO integration tests -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.179</version>
+            <scope>test</scope>
+        </dependency>
 
 	</dependencies>
 

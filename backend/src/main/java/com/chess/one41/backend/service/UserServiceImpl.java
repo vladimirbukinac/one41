@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl extends GenericServiceImpl<User, String> implements UserService {
+public class UserServiceImpl extends GenericServiceImpl<User, Long> implements UserService {
 
     @Autowired
     private UserDao userDao;
@@ -18,7 +18,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String> implements
     }
 
     @Override
-    protected GenericDao<User, String> getDao() {
+    protected GenericDao<User, Long> getDao() {
         return userDao;
     }
 }

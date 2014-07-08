@@ -26,7 +26,7 @@ public class UserServiceTest {
     @Test
     public void authenticateUserTest() {
         User existingUser = new User();
-        existingUser.setId("1");
+        existingUser.setId(1L);
         existingUser.setUsername("testuser");
         existingUser.setPassword("testpass");
 
