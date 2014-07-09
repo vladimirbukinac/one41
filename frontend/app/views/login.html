@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="header" style="visibility: hidden; height: 0px">
+        <p>Header</p>
+    </div>
+
+    <p><b class="header">Please log in</b></p>
+
+    <form name="LoginForm">
+        <table width="250px" >
+            <tr style="height: 40px">
+                <td width="60px">Username:</td>
+                <td width="100px"><input type="text" name="username" id="username" ng-model="user.username" placeholder="Username" required></td>
+            </tr>
+            <tr style="height: 40px">
+                <td>Password:</td>
+                <td><input name="password" placeholder="Password" type="password" ng-model="user.password" required></td>
+            </tr>
+            <tr style="height: 40px">
+                <td align="center" colspan="2"><button class="btn-success" ng-click="login()">Log in</button>&nbsp;&nbsp;<button class="btn-default" ng-click="cancel()">Cancel</button></td>
+            </tr>
+        </table>
+    </form>
+    <p ng-show="error">{{ error.message }}</p>
+
+    <div class="footer" style="visibility: hidden; height: 0px">
+        <p>Footer</p>
+    </div>
+</div>

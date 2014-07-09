@@ -4,6 +4,7 @@ describe('Controller: MenuCtrl', function () {
 
   // load the controller's module
   beforeEach(module('mMenu'));
+  beforeEach(module('ui.bootstrap'));
   beforeEach(function() {
       module('one41feApp');
   });

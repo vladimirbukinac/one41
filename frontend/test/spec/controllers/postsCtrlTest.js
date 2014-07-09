@@ -17,6 +17,6 @@ describe('Controller: PostsCtrl', function () {
   }));
 
   it('should attach name', function () {
-    expect(scope.name).toBe('2');
+    expect(scope.name).toBe('Here we need list of 10 posts');
   });
 });

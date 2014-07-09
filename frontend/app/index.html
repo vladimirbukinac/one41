@@ -15,24 +15,6 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 
-      <script type="text/ng-template" id="myModalContent.html">
-          <div class="modal-header">
-              <h3 class="modal-title">I'm a modal!</h3>
-          </div>
-          <div class="modal-body">
-              <ul>
-                  <li ng-repeat="item in items">
-                      <a ng-click="selected.item = item">{{ item }}</a>
-                  </li>
-              </ul>
-              Selected: <b>{{ selected.item }}</b>
-          </div>
-          <div class="modal-footer">
-              <button class="btn btn-primary" ng-click="ok()">OK</button>
-              <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-          </div>
-      </script>
-
   </head>
   <body ng-app="one41feApp">
     <!--[if lt IE 7]>
@@ -73,6 +55,7 @@
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -80,11 +63,10 @@
 
     <script src="scripts/app.js"></script>
 
-    <script src="scripts/modules/menuConf.js"></script>
-    <script src="scripts/modules/controllers/menuCtrl.js"></script>
+    <script src="scripts/modules/login.js"></script>
+    <script src="scripts/modules/menu.js"></script>
     <script src="scripts/services/feDateService.js"></script>
-    <script src="scripts/modules/postsConf.js"></script>
-    <script src="scripts/modules/controllers/postsCtrl.js"></script>
+    <script src="scripts/modules/posts.js"></script>
 
         <!-- endbuild -->
 </body>

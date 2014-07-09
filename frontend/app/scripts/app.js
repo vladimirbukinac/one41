@@ -1,25 +1,26 @@
+/**
+ * Created by vbukinac on 08.07.2014.
+ */
 'use strict';
 
-/**
- * @ngdoc overview
- * @name one41feApp
- * @description
- * # one41feApp
- *
- * Main module of the application.
- */
 angular
-  .module('one41feApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'mMenu',
-    'mPosts'
-  ]);/*
-  .config(function ($routeProvider) {
+    .module('one41feApp', [
+        'ngAnimate',
+        'ngCookies',
+        'ngResource',
+        'ngRoute',
+        'ngSanitize',
+        'ngTouch',
+        'mMenu',
+        'mPosts'
+    ])
+
+    .config(function(){
+
+});
+
+
+/*  .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',

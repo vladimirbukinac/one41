@@ -1,21 +1,18 @@
 <div>
-    <div ng-controller="MenuCtrl">
+    <div>
+        <span class="title">One41</span>
+    </div>
+    <div class="mainmenu" ng-controller="LoginCtrl">
         <div>
-            <div>
-                <span class="title">One41</span>
-            </div>
-            <div class="mainmenu">
-                <div>
-                    <input style="float: left;" class="btn-success" type="button" value="Login">
-                </div>
-                <div style="float: left; width: 400px" align="center">
-                    <input class="btn-default" type="button" value="New message">
-                    <input class="btn-default" type="button" value="Profile">
-                </div>
-            </div>
-            <div class="datetime" align="right">
-                {{datetime}}
-            </div>
+            <button style="float: left;" class="btn-success" ng-click="open()">Log in</button>
+        </div>
+        <div style="float: left; width: 400px" align="center">
+            <input class="btn-default" type="button" value="New message">
+            <input class="btn-default" type="button" value="Profile">
         </div>
     </div>
+    <div class="datetime" align="right" ng-controller="DateTimeCtrl">
+        {{datetime}}
+    </div>
 </div>
+
