@@ -14,21 +14,41 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
+      <script type="text/ng-template" id="myModalContent.html">
+          <div class="modal-header">
+              <h3 class="modal-title">I'm a modal!</h3>
+          </div>
+          <div class="modal-body">
+              <ul>
+                  <li ng-repeat="item in items">
+                      <a ng-click="selected.item = item">{{ item }}</a>
+                  </li>
+              </ul>
+              Selected: <b>{{ selected.item }}</b>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-primary" ng-click="ok()">OK</button>
+              <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+          </div>
+      </script>
+
   </head>
   <body ng-app="one41feApp">
     <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <!--  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
     <div class="container">
-      <div class="header">
+      <div class="header" style="visibility: hidden; height: 0px">
           <p>Header</p>
       </div>
 
-      <div ng-include="'views/top.html'">
+      <div class="menu" ng-include="'views/menu.html'">
       </div>
-      <div ng-include="'views/bottom.html'">
+
+      <div class="posts" ng-include="'views/posts.html'">
       </div>
 
       <div class="footer">
@@ -57,11 +77,15 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
+
     <script src="scripts/app.js"></script>
-    <script src="scripts/modules/top.js"></script>
-    <script src="scripts/modules/bottom.js"></script>
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/about.js"></script>
-    <!-- endbuild -->
+
+    <script src="scripts/modules/menu.js"></script>
+    <script src="scripts/controllers/menuCtrl.js"></script>
+    <script src="scripts/services/feDateService.js"></script>
+    <script src="scripts/modules/posts.js"></script>
+    <script src="scripts/controllers/postsCtrl.js"></script>
+
+        <!-- endbuild -->
 </body>
 </html>

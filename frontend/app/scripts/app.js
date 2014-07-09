@@ -16,8 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'mTop',
-    'mBottom'
+    'mMenu',
+    'mPosts'
   ]);/*
   .config(function ($routeProvider) {
     $routeProvider

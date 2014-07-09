@@ -68,12 +68,37 @@ body {
     padding-left: 0;
     padding-right: 0;
   }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+.title {
+    float: left;
+    font-size: 20px;
+    font-weight: bold;
+    width: 80px;
+}
+
+.mainmenu {
+    float: left;
+    width: 500px;
+}
+
+.datetime {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    /*width: 200px;*/
+}
+
+.menu {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 30px;
+}
+
+.posts {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
