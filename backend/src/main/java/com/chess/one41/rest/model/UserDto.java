@@ -1,18 +1,9 @@
-package com.chess.one41.backend.entity;
+package com.chess.one41.rest.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
-@Entity
-public class User {
-
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
-
-    @Id
-    @GeneratedValue
-    private Long id;
+@JsonRootName(value = "user")
+public class UserDto extends TokenEntity {
 
     private String username;
 
@@ -25,14 +16,6 @@ public class User {
     private String lastName;
 
     private String pictureUrl;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;

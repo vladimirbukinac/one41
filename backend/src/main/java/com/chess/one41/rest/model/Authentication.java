@@ -3,7 +3,7 @@ package com.chess.one41.rest.model;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName(value = "authentication")
-public class Authentication {
+public class Authentication extends TokenEntity {
 
     private String username;
     private String password;

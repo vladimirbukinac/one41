@@ -38,7 +38,6 @@ public class UserServiceTest {
         Assert.assertEquals(foundUser.getPassword(), existingUser.getPassword());
 
         User nonExistingUser = new User();
-
         Mockito.when(userDao.authenticateUser(nonExistingUser.getUsername(), nonExistingUser.getPassword())).thenReturn(null);
         foundUser = userService.authenticateUser(nonExistingUser.getUsername(), nonExistingUser.getPassword());
         Assert.assertNull(foundUser);
