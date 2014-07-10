@@ -4,26 +4,35 @@
 'use strict';
 
 angular.module('mLogin', [])
-    .config(function () {
-    })
+.config(function () {
+})
 
-    .controller('LoginModalInstanceCtrl', function ($scope, $modalInstance, user) {
+.controller('LoginModalInstanceCtrl', ['$rootScope', '$scope', '$modalInstance', 'user', 'HttpLoginService',
+                               function ($rootScope, $scope, $modalInstance, user, HttpLoginService) {
 
-        $scope.user = user;
+    $scope.user = user;
 
-        $scope.login = function () {
-            if (!(angular.equals($scope.user.username, null) || angular.equals($scope.user.username, '') || angular.equals($scope.user.username, undefined) ||
-                  angular.equals($scope.user.password, null) || angular.equals($scope.user.password, '') || angular.equals($scope.user.password, undefined))) {
+    $scope.login = function () {
+        if (!(angular.equals($scope.user.username, null) || angular.equals($scope.user.username, '') || angular.equals($scope.user.username, undefined) ||
+              angular.equals($scope.user.password, null) || angular.equals($scope.user.password, '') || angular.equals($scope.user.password, undefined))) {
 
-                // here we need to add call for rest api service to get user info and token
+             HttpLoginService.checkUser(user).then(function(result) {
+                if (!(angular.equals(result, null) || angular.equals(result, '') || angular.equals(result, undefined))) {
+                    console.log(result);
+                    $modalInstance.close(result);
+                } else {
+                    // this should be replaced with ng error
+                    $rootScope.error = 'Bad credentials!';
+                }
 
-                // here we have to return user with token
-                $modalInstance.close($scope.user);
-            }
-        };
+            }, function(status) {
+                console.log(status);
+            });
+        }
+    };
 
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
-    });
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
 

@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: MenuCtrl', function () {
+describe('Controller: DateTimeCtrl', function () {
 
   // load the controller's module
   beforeEach(module('mMenu'));
@@ -9,7 +9,7 @@ describe('Controller: MenuCtrl', function () {
       module('one41feApp');
   });
 
-  var MenuCtrl,
+  var DateTimeCtrl,
     scope, interval, service;
 
   // Initialize the controller and a mock scope
@@ -18,7 +18,7 @@ describe('Controller: MenuCtrl', function () {
     scope = $rootScope.$new();
     interval = $interval;
     service = feDateService;
-    MenuCtrl = $controller('MenuCtrl', {
+    DateTimeCtrl = $controller('DateTimeCtrl', {
       $scope: scope,
       $interval: interval,
       feDateService: service

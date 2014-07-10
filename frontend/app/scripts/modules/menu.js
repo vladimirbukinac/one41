@@ -4,27 +4,27 @@
 'use strict';
 
 angular.module('mMenu', ['ui.bootstrap', 'mLogin'])
-    .config(function () {
-    })
+.config(function () {
+})
 
-    .value('user', {})
+.value('user', {})
 
-    .controller('DateTimeCtrl', ['$scope', '$interval', 'feDateService', function($scope, $interval, feDateService) {
+.controller('DateTimeCtrl', ['$scope', '$interval', 'feDateService', function($scope, $interval, feDateService) {
 
-        function getCurrentTimeInFormatHMS(){
-            return feDateService.getCurrentTimeInFormatHMS();
-        }
+    function getCurrentTimeInFormatHMS(){
+        return feDateService.getCurrentTimeInFormatHMS();
+    }
 
-        var datetimeRefresh;
+    var datetimeRefresh;
 
+    $scope.datetime = getCurrentTimeInFormatHMS();
+
+    datetimeRefresh = $interval(function() {
         $scope.datetime = getCurrentTimeInFormatHMS();
+    }, 1000);
+}])
 
-        datetimeRefresh = $interval(function() {
-            $scope.datetime = getCurrentTimeInFormatHMS();
-        }, 1000);
-    }])
-
-    .controller('LoginCtrl', ['$scope', '$modal', '$log', 'user', function ($scope, $modal, $log, userOfmMenu) {
+.controller('LoginCtrl', ['$scope', '$modal', '$log', 'user', function ($scope, $modal, $log, userOfmMenu) {
 
     $scope.open = function () {
 
@@ -32,8 +32,6 @@ angular.module('mMenu', ['ui.bootstrap', 'mLogin'])
         $scope.user = {};
         $scope.user.username = '';
         $scope.user.password = '';
-        $scope.user.token = '';
-
 
         var loginModalInstance = $modal.open({
             templateUrl: 'views/login.html',

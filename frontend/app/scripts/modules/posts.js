@@ -4,10 +4,9 @@
 'use strict';
 
 angular.module('mPosts', [])
-    .config(function () {
-    })
+.config(function () {
+})
 
-    .controller('PostsCtrl', function($scope) {
-
+.controller('PostsCtrl', function($scope) {
     $scope.name = 'Here we need list of 10 posts';
 });

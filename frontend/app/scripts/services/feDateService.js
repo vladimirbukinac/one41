@@ -1,8 +1,5 @@
 'use strict';
 
-/**
- * This class contains utils that deal with dates.
- */
 angular.module('one41feApp')
 .factory('feDateService', function () {
     return {
