@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 @JsonRootName(value = "user")
 public class UserDto extends TokenEntity {
 
+    private Long id;
+
     private String username;
 
     private String password;
@@ -16,6 +18,14 @@ public class UserDto extends TokenEntity {
     private String lastName;
 
     private String pictureUrl;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

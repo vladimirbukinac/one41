@@ -37,12 +37,12 @@
             <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- Spring AOP + AspectJ -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
@@ -121,12 +121,6 @@
             <version>1.4.179</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.5.3</version>
-        </dependency>
-
     </dependencies>
 
 	<build>

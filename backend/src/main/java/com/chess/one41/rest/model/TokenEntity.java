@@ -1,6 +1,9 @@
 package com.chess.one41.rest.model;
 
-public abstract class TokenEntity {
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+@JsonRootName(value = "token")
+public class TokenEntity {
 
     private String token;
 

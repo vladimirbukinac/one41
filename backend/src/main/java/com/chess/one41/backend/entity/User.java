@@ -1,8 +1,7 @@
 package com.chess.one41.backend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -25,6 +24,9 @@ public class User {
     private String lastName;
 
     private String pictureUrl;
+
+    @OneToMany(mappedBy = "user")
+    private List<Message> messages;
 
     public Long getId() {
         return id;
@@ -80,5 +82,13 @@ public class User {
 
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }

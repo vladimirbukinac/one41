@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SessionUtil {
 
     private static Map<String, SessionInfo> session = new ConcurrentHashMap<String, SessionInfo>();
-    private static final int timeout = 60; // in seconds
+    private static final int timeout = 60 * 15; // in seconds
 
     public static boolean isUserLoggedIn(String token) {
         if (token == null) {
