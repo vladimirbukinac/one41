@@ -4,14 +4,14 @@
 'use strict';
 
 angular.module('one41feApp')
-.factory('HttpLoginService', ['$http', '$q', function($http, $q) {
+.factory('LoginService', ['$http', '$q', function($http, $q) {
 
     return {
         checkUser: function(user) {
             var deferred = $q.defer();
             var data = {'authentication':{'username': user.username,'password': user.password}};
 
-            $http.post('/rest/user/authenticate', data)
+            $http.post('http://localhost:8080/rest/user/authenticate', data)
                 .success(function (data/*, status, headers, scope*/) {
                     deferred.resolve(data);
                 })

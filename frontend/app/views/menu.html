@@ -2,11 +2,19 @@
     <div>
         <span class="title">One41</span>
     </div>
-    <div class="mainmenu" ng-controller="LoginCtrl">
-        <div>
-            <button style="float: left;" class="btn-success" ng-click="open()">Log in</button>
+    <div class="mainmenu" data-ng-controller="MenuCtrl" data-ng-init="init()">
+        <div style="float: left; width: 250px" ng-controller="LoginCtrl">
+            <div>
+                <button style="float: left; width: 75px" class="btn-success" ng-click="open()" ng-show="isUserLogedIn()">Log in</button>
+            </div>
+            <div>
+                <button style="float: left; width: 75px" class="btn-success" ng-click="logout()" ng-hide="isUserLogedIn()">Log out</button>
+            </div>
+            <div>
+                <label style="float: left;" ng-hide="isUserLogedIn()">&nbsp;{{user.firstName}}&nbsp;{{user.lastName}}</label>
+            </div>
         </div>
-        <div style="float: left; width: 400px" align="center">
+        <div style="float: right; width: 250px" align="center">
             <input class="btn-default" type="button" value="New message">
             <input class="btn-default" type="button" value="Profile">
         </div>

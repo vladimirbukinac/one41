@@ -8,6 +8,14 @@ angular.module('mMenu', ['ui.bootstrap', 'mLogin'])
 })
 
 .value('user', {})
+//.value('user', {firstName: 'Vladimir', lastName: 'Bukinac'})
+
+.controller('MenuCtrl', ['$scope', '$cookieStore', 'user', function($scope, $cookieStore, userOfmMenu) {
+
+    $scope.init = function () {
+        userOfmMenu = $cookieStore.get('one41CookieKey');
+    };
+}])
 
 .controller('DateTimeCtrl', ['$scope', '$interval', 'feDateService', function($scope, $interval, feDateService) {
 
@@ -24,11 +32,9 @@ angular.module('mMenu', ['ui.bootstrap', 'mLogin'])
     }, 1000);
 }])
 
-.controller('LoginCtrl', ['$scope', '$modal', '$log', 'user', function ($scope, $modal, $log, userOfmMenu) {
+.controller('LoginCtrl', ['$scope', '$modal', '$log', '$cookieStore', 'user', function ($scope, $modal, $log, $cookieStore, userOfmMenu) {
 
     $scope.open = function () {
-
-        // here we define user
         $scope.user = {};
         $scope.user.username = '';
         $scope.user.password = '';
@@ -46,10 +52,33 @@ angular.module('mMenu', ['ui.bootstrap', 'mLogin'])
             }
         });
 
-        loginModalInstance.result.then(function (user) {
-            userOfmMenu = user;
+        loginModalInstance.result.then(function (response) {
+            userOfmMenu = response.user;
+            $cookieStore.put('one41CookieKey', userOfmMenu);
+
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
+    };
+
+    $scope.logout = function () {
+        $cookieStore.remove('one41CookieKey');
+        userOfmMenu = {};
+    };
+
+    // this should be as general service for other calls
+    // here should only be call for service
+    $scope.isUserLogedIn = function() {
+        /*if (angular.equals(userOfmMenu, {})) {
+            userOfmMenu = $cookieStore.get('one41CookieKey');
+        }*/
+        $scope.user = userOfmMenu;
+
+//        if ((angular.equals(userOfmMenu, {})) || (angular.equals(userOfmMenu, undefined))) {
+        if ((angular.equals($scope.user, {})) || (angular.equals($scope.user, undefined))) {
+            return true;
+        } else {
+            return false;
+        }
     };
 }]);

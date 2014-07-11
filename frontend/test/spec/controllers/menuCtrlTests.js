@@ -5,9 +5,8 @@ describe('Controller: DateTimeCtrl', function () {
   // load the controller's module
   beforeEach(module('mMenu'));
   beforeEach(module('ui.bootstrap'));
-  beforeEach(function() {
-      module('one41feApp');
-  });
+  beforeEach(module('one41feApp'));
+
 
   var DateTimeCtrl,
     scope, interval, service;

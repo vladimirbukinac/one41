@@ -7,8 +7,8 @@ angular.module('mLogin', [])
 .config(function () {
 })
 
-.controller('LoginModalInstanceCtrl', ['$rootScope', '$scope', '$modalInstance', 'user', 'HttpLoginService',
-                               function ($rootScope, $scope, $modalInstance, user, HttpLoginService) {
+.controller('LoginModalInstanceCtrl', ['$rootScope', '$scope', '$modalInstance', '$log', 'user', 'LoginService',
+                               function ($rootScope, $scope, $modalInstance, $log, user, LoginService) {
 
     $scope.user = user;
 
@@ -16,17 +16,17 @@ angular.module('mLogin', [])
         if (!(angular.equals($scope.user.username, null) || angular.equals($scope.user.username, '') || angular.equals($scope.user.username, undefined) ||
               angular.equals($scope.user.password, null) || angular.equals($scope.user.password, '') || angular.equals($scope.user.password, undefined))) {
 
-             HttpLoginService.checkUser(user).then(function(result) {
+             LoginService.checkUser(user).then(function(result) {
                 if (!(angular.equals(result, null) || angular.equals(result, '') || angular.equals(result, undefined))) {
-                    console.log(result);
+                    //$log.info(result);
                     $modalInstance.close(result);
                 } else {
-                    // this should be replaced with ng error
+                    // this should be replaced with ngMessage or new directive
                     $rootScope.error = 'Bad credentials!';
                 }
 
             }, function(status) {
-                console.log(status);
+                 $log.info(status);
             });
         }
     };
@@ -35,4 +35,5 @@ angular.module('mLogin', [])
         $modalInstance.dismiss('cancel');
     };
 }]);
+
 
