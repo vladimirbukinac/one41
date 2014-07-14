@@ -1,10 +1,9 @@
 'use strict';
 
-angular.module('one41feApp')
+angular.module('mServices')
 .factory('feDateService', function () {
     return {
-        getCurrentDateTimeInFormatDMYHMS: function() {
-            var datetime = new Date();
+        getCurrentDateTimeInFormatDMYHMS: function(datetime) {
             var year = datetime.getFullYear();
             var month = ('0' + (datetime.getMonth() + 1)).slice(-2);
             var day = ('0' + datetime.getDate()).slice(-2);
@@ -16,8 +15,7 @@ angular.module('one41feApp')
             return formattedDateTime;
         },
 
-        getCurrentTimeInFormatHMS: function() {
-            var datetime = new Date();
+        getCurrentTimeInFormatHMS: function(datetime) {
             var hours = ('0' + datetime.getHours()).slice(-2);
             var minutes = ('0' + datetime.getMinutes()).slice(-2);
             var seconds = ('0' + datetime.getSeconds()).slice(-2);

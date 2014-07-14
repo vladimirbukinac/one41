@@ -1,5 +1,22 @@
-<div ng-controller="PostsCtrl">
-    <div>
-        {{name}}
-    </div>
+<div ng-controller="PostsCtrl" >
+    <alert ng-show=$parent.showFeedback close="closeAlert()" type=alertType>{{status}}</alert>
+
+    <table ng-init="getPosts()" class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>USER ID</th>
+            <th>POST TEXT</th>
+            <th>CREATED</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="post in listOfPosts">
+        <tr>
+            <td>{{post.id}}</td>
+            <td>{{post.userId}}</td>
+            <td>{{post.text}}</td>
+            <td>{{post.creationDate}}</td>
+        </tr>
+        </tbody>
+    </table>
 </div>

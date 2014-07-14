@@ -3,36 +3,32 @@
  */
 'use strict';
 
-angular.module('mMenu', ['ui.bootstrap', 'mLogin'])
+angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
 .config(function () {
 })
 
-.value('user', {})
-//.value('user', {firstName: 'Vladimir', lastName: 'Bukinac'})
-
-.controller('MenuCtrl', ['$scope', '$cookieStore', 'user', function($scope, $cookieStore, userOfmMenu) {
-
-    $scope.init = function () {
-        userOfmMenu = $cookieStore.get('one41CookieKey');
-    };
-}])
+.directive('initData', [/*'$scope', 'UserService', */function (/*$scope, UserService*/) {
+        return function() {
+            //$scope.user = UserService.getUser();
+        };
+    }])
 
 .controller('DateTimeCtrl', ['$scope', '$interval', 'feDateService', function($scope, $interval, feDateService) {
 
-    function getCurrentTimeInFormatHMS(){
-        return feDateService.getCurrentTimeInFormatHMS();
+    function getCurrentTimeInFormatHMS(datetime){
+        return feDateService.getCurrentTimeInFormatHMS(datetime);
     }
 
     var datetimeRefresh;
 
-    $scope.datetime = getCurrentTimeInFormatHMS();
+    $scope.datetime = getCurrentTimeInFormatHMS(new Date());
 
     datetimeRefresh = $interval(function() {
-        $scope.datetime = getCurrentTimeInFormatHMS();
+        $scope.datetime = getCurrentTimeInFormatHMS(new Date());
     }, 1000);
 }])
 
-.controller('LoginCtrl', ['$scope', '$modal', '$log', '$cookieStore', 'user', function ($scope, $modal, $log, $cookieStore, userOfmMenu) {
+.controller('LoginCtrl', ['$scope', '$modal', '$log', '$cookieStore'/*, 'user'*/, 'UserService', function ($scope, $modal, $log, $cookieStore/*, userOfmMenu*/, UserService) {
 
     $scope.open = function () {
         $scope.user = {};
@@ -53,8 +49,8 @@ angular.module('mMenu', ['ui.bootstrap', 'mLogin'])
         });
 
         loginModalInstance.result.then(function (response) {
-            userOfmMenu = response.user;
-            $cookieStore.put('one41CookieKey', userOfmMenu);
+            $scope.user = response.user;
+            UserService.setUser($scope.user);
 
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
@@ -62,20 +58,17 @@ angular.module('mMenu', ['ui.bootstrap', 'mLogin'])
     };
 
     $scope.logout = function () {
-        $cookieStore.remove('one41CookieKey');
-        userOfmMenu = {};
+        $scope.user = {};
+        UserService.setUser($scope.user);
     };
 
-    // this should be as general service for other calls
-    // here should only be call for service
-    $scope.isUserLogedIn = function() {
-        /*if (angular.equals(userOfmMenu, {})) {
-            userOfmMenu = $cookieStore.get('one41CookieKey');
-        }*/
-        $scope.user = userOfmMenu;
+    $scope.isUserLogged = function() {
+        if (UserService.isUserLogged()) {
+            //this is not good - $scope.user should be initialized on other place
+            if (angular.equals($scope.user, undefined) || angular.equals($scope.user, {}) || angular.equals($scope.user, null) || angular.equals($scope.user, '')) {
+                $scope.user = UserService.getUser();
+            }
 
-//        if ((angular.equals(userOfmMenu, {})) || (angular.equals(userOfmMenu, undefined))) {
-        if ((angular.equals($scope.user, {})) || (angular.equals($scope.user, undefined))) {
             return true;
         } else {
             return false;

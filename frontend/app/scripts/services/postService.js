@@ -1,21 +1,24 @@
 /**
- * Created by vbukinac on 10.07.2014.
+ * Created by vbukinac on 14.07.2014.
  */
 'use strict';
 
 angular.module('mServices')
-.factory('LoginService', ['$http', '$q', function($http, $q) {
+.factory('PostService', ['$http', '$q', function($http, $q) {
 
     return {
-        checkUser: function(user) {
+        getPosts: function(token) {
             var deferred = $q.defer();
-            var data = {'authentication':{'username': user.username,'password': user.password}};
+            //console.log(token);
 
-            $http.post('/rest/user/authenticate', data)
+            var data = {'token': {'token': token}};
+            $http.post('/rest/message/latest', data)
                 .success(function (data/*, status, headers, scope*/) {
+                    //console.log(data);
                     deferred.resolve(data);
                 })
                 .error(function (/*data, */status/*, headers, scope*/) {
+                    //console.log(status);
                     deferred.reject(status);
                 });
 
@@ -23,6 +26,3 @@ angular.module('mServices')
         }
     };
 }]);
-
-
-

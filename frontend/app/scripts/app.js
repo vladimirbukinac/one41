@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('one41feApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'mMenu', 'mPosts'])
+angular.module('one41feApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'mServices', 'mMenu', 'mPosts'])
 .config(function(){
 
 })

@@ -2,16 +2,16 @@
     <div>
         <span class="title">One41</span>
     </div>
-    <div class="mainmenu" data-ng-controller="MenuCtrl" data-ng-init="init()">
+    <div class="mainmenu" init-data>
         <div style="float: left; width: 250px" ng-controller="LoginCtrl">
             <div>
-                <button style="float: left; width: 75px" class="btn-success" ng-click="open()" ng-show="isUserLogedIn()">Log in</button>
+                <button style="float: left; width: 75px" class="btn-success" ng-click="open()" ng-hide="isUserLogged()">Log in</button>
             </div>
             <div>
-                <button style="float: left; width: 75px" class="btn-success" ng-click="logout()" ng-hide="isUserLogedIn()">Log out</button>
+                <button style="float: left; width: 75px" class="btn-success" ng-click="logout()" ng-show="isUserLogged()">Log out</button>
             </div>
             <div>
-                <label style="float: left;" ng-hide="isUserLogedIn()">&nbsp;{{user.firstName}}&nbsp;{{user.lastName}}</label>
+                <label style="float: left;" ng-show="isUserLogged()">&nbsp;{{user.firstName}}&nbsp;{{user.lastName}}</label>
             </div>
         </div>
         <div style="float: right; width: 250px" align="center">
