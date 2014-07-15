@@ -3,6 +3,7 @@ package com.chess.one41.rest;
 import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.UserService;
 import com.chess.one41.rest.model.Authentication;
+import com.chess.one41.rest.model.Response;
 import com.chess.one41.rest.model.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.BeanUtils;
@@ -20,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value="/authenticate", method= {RequestMethod.GET, RequestMethod.POST})
-    public ResponseWrapper authenticateUser(@RequestBody Authentication user) {
+    public Response authenticateUser(@RequestBody Authentication user) {
         User authenticatedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
         if (authenticatedUser == null) {
             return null;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     // Wrapper class for generating wanted JSON output format
-    private static class ResponseWrapper {
+    private static class ResponseWrapper implements Response {
         @JsonProperty("user")
         private final UserDto userDto;
 

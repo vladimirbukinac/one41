@@ -3,6 +3,7 @@ package com.chess.one41.rest;
 import com.chess.one41.backend.entity.Message;
 import com.chess.one41.backend.service.MessageService;
 import com.chess.one41.rest.model.MessageDto;
+import com.chess.one41.rest.model.Response;
 import com.chess.one41.rest.model.TokenEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,7 +26,7 @@ public class MessageController {
     MessageService messageService;
 
     @RequestMapping(value="/latest", method= {RequestMethod.GET, RequestMethod.POST})
-    public ResponseListWrapper getLatestMessages(@RequestBody TokenEntity token) {
+    public Response getLatestMessages(@RequestBody TokenEntity token) {
         List<Message> latestMessages = messageService.getLatestMessages();
 
         if (latestMessages == null) {
@@ -53,7 +54,7 @@ public class MessageController {
 
     @RequestMapping(value="/get", method= {RequestMethod.GET, RequestMethod.POST})
     @Token(required = false)
-    public ResponseWrapper getMessage() {
+    public Response getMessage() {
         Message message = messageService.getEntity(1L);
         MessageDto messageDto = new MessageDto();
 
@@ -63,7 +64,7 @@ public class MessageController {
 
 
     // Wrapper classes for generating wanted JSON output format
-    private static class ResponseWrapper {
+    private static class ResponseWrapper implements Response {
         @JsonProperty(value = "message")
         private final MessageDto messageDto;
 
@@ -72,7 +73,7 @@ public class MessageController {
         }
     }
 
-    private static class ResponseListWrapper {
+    private static class ResponseListWrapper implements Response {
         @JsonProperty(value = "messages")
         @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include= JsonTypeInfo.As.WRAPPER_OBJECT)
         private final List<MessageDto> messageDto;
