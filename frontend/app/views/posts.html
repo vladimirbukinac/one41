@@ -1,6 +1,4 @@
 <div ng-controller="PostsCtrl" >
-    <alert ng-show=$parent.showFeedback close="closeAlert()" type=alertType>{{status}}</alert>
-
     <table ng-init="getPosts()" class="table">
         <thead>
         <tr>
@@ -19,4 +17,5 @@
         </tr>
         </tbody>
     </table>
+    <alert style="color: #FF0000; font-weight: bold; font-style: italic" ng-show=showFeedback close="closeAlert()" type=alertType>{{status}}</alert>
 </div>

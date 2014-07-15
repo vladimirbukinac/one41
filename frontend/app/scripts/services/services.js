@@ -9,12 +9,13 @@ angular.module('mServices', [])
 )
 
 .value('user', {})
+.value('firstTimeCookeiCheck', true)
 
-.factory('UserService', ['$cookieStore', 'user', function($cookieStore, user) {
+.factory('UserService', ['$cookieStore', 'user', 'firstTimeCookeiCheck', function($cookieStore, user, firstTimeCookeiCheck) {
 
     return {
         getUser: function() {
-            if (angular.equals(user, {})) {
+            if ((angular.equals(user, {}) || (angular.equals(user, undefined)))) {
                 user = $cookieStore.get('one41CookieKey');
             }
 
@@ -32,7 +33,12 @@ angular.module('mServices', [])
         },
 
         isUserLogged: function () {
-            if ((angular.equals(user, {})) || (angular.equals(user, undefined))) {
+            if (firstTimeCookeiCheck) {
+                firstTimeCookeiCheck = false;
+                this.getUser();
+            }
+
+            if ((angular.equals(user, {}) || (angular.equals(user, undefined)))) {
                 return false;
             } else {
                 return true;
