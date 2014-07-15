@@ -37,6 +37,8 @@ angular.module('mPosts', ['mServices'])
 
                     if (result.length === 0) {
                         showAlert('warning', 'No messages!');
+                    } else {
+                        $scope.showFeedback = false;
                     }
                 }, function (e) {
                     showAlert('error', e);

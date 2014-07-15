@@ -9,7 +9,7 @@ angular.module('mLogin', [])
 
 .controller('LoginModalInstanceCtrl', ['$rootScope', '$scope', '$modalInstance', '$log', 'user', 'LoginService',
     function ($rootScope, $scope, $modalInstance, $log, user, LoginService) {
-
+        $scope.showFeedback = false;
         $scope.user = user;
 
         $scope.login = function () {
@@ -21,12 +21,11 @@ angular.module('mLogin', [])
                         //$log.info(result);
                         $modalInstance.close(result);
                     } else {
-                        // this should be replaced with ngMessage or new directive
-                        $rootScope.error = 'Bad credentials!';
+                        showAlert('error', 'Bad credentials!');
                     }
 
                 }, function(status) {
-                    $log.info(status);
+                    showAlert('error', status);
                 });
             }
         };
@@ -34,6 +33,16 @@ angular.module('mLogin', [])
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
-}]);
+
+        $scope.closeAlert = function(){
+            $scope.showFeedback = false;
+        };
+
+        function showAlert(type, message) {
+            $scope.status  = message;
+            $scope.showFeedback = true;
+            $scope.alertType = type;
+        }
+    }]);
 
 

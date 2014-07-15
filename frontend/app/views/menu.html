@@ -15,8 +15,8 @@
             </div>
         </div>
         <div style="float: right; width: 250px" align="center">
-            <input class="btn-default" type="button" value="New message">
-            <input class="btn-default" type="button" value="Profile">
+            <button class="btn-default" ng-show="isUserLogged()" ng-controller="NewPostCtrl">New message</button>
+            <button class="btn-default" ng-show="isUserLogged()" ng-controller="ProfileCtrl">Profile</button>
         </div>
     </div>
     <div class="datetime" align="right" ng-controller="DateTimeCtrl">

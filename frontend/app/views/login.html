@@ -20,7 +20,7 @@
             </tr>
         </table>
     </form>
-    <p ng-show="error" ng-model="error">{{error}}</p>
+    <alert style="color: #FF0000; font-weight: bold; font-style: italic; width: 250px" ng-show=showFeedback close="closeAlert()" type=alertType>{{status}}</alert>
 
     <div class="footer" style="visibility: hidden; height: 0px">
         <p>Footer</p>
