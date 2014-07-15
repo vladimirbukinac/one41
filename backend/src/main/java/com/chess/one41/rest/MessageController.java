@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/rest/message")
 @Token
 public class MessageController {
 
