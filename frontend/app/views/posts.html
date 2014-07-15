@@ -10,10 +10,10 @@
         </thead>
         <tbody ng-repeat="post in listOfPosts">
         <tr>
-            <td>{{post.id}}</td>
-            <td>{{post.userId}}</td>
-            <td>{{post.text}}</td>
-            <td>{{post.creationDate}}</td>
+            <td>{{post.message.id}}</td>
+            <td>{{post.message.userId}}</td>
+            <td>{{post.message.text}}</td>
+            <td>{{post.message.creationDate}}</td>
         </tr>
         </tbody>
     </table>

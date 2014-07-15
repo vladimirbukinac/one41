@@ -23,14 +23,14 @@ angular.module('mPosts', ['mServices'])
             // this should be without user token - now token is necessary
             if (UserService.isUserLogged()) {
                 PostService.getPosts(UserService.getUser().token).then(function (result) {
-                    $log.info(result);
+                    //$log.info(result);
 
                     if (!(angular.equals(result, null) || angular.equals(result, {}) || angular.equals(result, undefined) || angular.equals(result, ''))) {
-                        for (var i = 0; i < result.ArrayList.length; i++){
-                            result.ArrayList[i].creationDate = feDateService.getCurrentDateTimeInFormatDMYHMS(new Date(result.ArrayList[i].creationDate));
+                        for (var i = 0; i < result.messages.length; i++){
+                            result.messages[i].message.creationDate = feDateService.getCurrentDateTimeInFormatDMYHMS(new Date(result.messages[i].message.creationDate));
                         }
 
-                        $scope.listOfPosts = result.ArrayList;
+                        $scope.listOfPosts = result.messages;
                     } else {
                         $scope.listOfPosts = null;
                     }
