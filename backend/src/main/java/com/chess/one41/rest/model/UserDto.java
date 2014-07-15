@@ -1,5 +1,6 @@
 package com.chess.one41.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName(value = "user")
@@ -73,5 +74,11 @@ public class UserDto extends TokenEntity {
 
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    @JsonIgnore(value = false) // return token as well
+    @Override
+    public String getToken() {
+        return super.getToken();
     }
 }

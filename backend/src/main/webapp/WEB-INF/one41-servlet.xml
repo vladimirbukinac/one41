@@ -29,7 +29,6 @@
 					<bean class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
 						<property name="featuresToEnable">
 							<list>
-                                <util:constant static-field="com.fasterxml.jackson.databind.SerializationFeature.WRAP_ROOT_VALUE"/>
 								<util:constant static-field="com.fasterxml.jackson.databind.DeserializationFeature.UNWRAP_ROOT_VALUE"/>
 							</list>
 						</property>
