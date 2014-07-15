@@ -3,6 +3,7 @@ package com.chess.one41.rest;
 import com.chess.one41.backend.entity.Message;
 import com.chess.one41.backend.service.MessageService;
 import com.chess.one41.rest.model.MessageDto;
+import com.chess.one41.rest.model.TokenEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +25,7 @@ public class MessageController {
     MessageService messageService;
 
     @RequestMapping(value="/latest", method= {RequestMethod.GET, RequestMethod.POST})
-    public ResponseListWrapper getLatestMessages() {
+    public ResponseListWrapper getLatestMessages(@RequestBody TokenEntity token) {
         List<Message> latestMessages = messageService.getLatestMessages();
 
         if (latestMessages == null) {
