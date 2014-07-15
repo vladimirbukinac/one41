@@ -4,6 +4,7 @@ import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.UserService;
 import com.chess.one41.rest.model.Authentication;
 import com.chess.one41.rest.model.UserDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,15 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
-@Token
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value="/authenticate", method= RequestMethod.POST)
-    @Token(required = false)
-    public UserDto authenticateUser(@RequestBody Authentication user) {
+    @RequestMapping(value="/authenticate", method= {RequestMethod.GET, RequestMethod.POST})
+    public ResponseWrapper authenticateUser(@RequestBody Authentication user) {
         User authenticatedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
         if (authenticatedUser == null) {
             return null;
@@ -31,22 +30,16 @@ public class UserController {
         BeanUtils.copyProperties(authenticatedUser, userDto);
         userDto.setToken(SessionUtil.createUserSession(authenticatedUser));
 
-        return userDto;
+        return new ResponseWrapper(userDto);
     }
 
-    // The @Token annotation on the class level is applied to this method!
-    // This method is here for testing purposes only
-    @RequestMapping(value="/authenticate/session", method= RequestMethod.POST)
-    public UserDto authenticateUserWithSession(@RequestBody Authentication user) {
-        User authenticatedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
-        if (authenticatedUser == null) {
-            return null;
+    // Wrapper class for generating wanted JSON output format
+    private static class ResponseWrapper {
+        @JsonProperty("user")
+        private final UserDto userDto;
+
+        public ResponseWrapper(UserDto userDto) {
+            this.userDto = userDto;
         }
-
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(authenticatedUser, userDto);
-        userDto.setToken(SessionUtil.createUserSession(authenticatedUser));
-
-        return userDto;
     }
 }

@@ -1,10 +1,12 @@
 package com.chess.one41.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.Date;
 
 @JsonRootName(value = "message")
+@JsonTypeName(value = "message")
 public class MessageDto extends TokenEntity {
 
     private Long id;
