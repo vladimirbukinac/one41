@@ -93,12 +93,12 @@
 			<version>2.4.1.1</version>
 		</dependency>
 
+        <!-- Input sanitizer -->
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
             <version>r239</version>
         </dependency>
-
 
         <!-- JUnit & Mockito -->
         <dependency>
