@@ -32,6 +32,13 @@
 								<util:constant static-field="com.fasterxml.jackson.databind.DeserializationFeature.UNWRAP_ROOT_VALUE"/>
 							</list>
 						</property>
+                        <property name="deserializersByType">
+                            <map key-type="java.lang.Class">
+                                <entry key="java.lang.String">
+                                    <bean class="com.chess.one41.rest.JsonStringSanitizer" />
+                                </entry>
+                            </map>
+                        </property>
 					</bean>
 				</property>
 			</bean>

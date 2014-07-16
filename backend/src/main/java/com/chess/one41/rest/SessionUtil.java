@@ -38,7 +38,7 @@ public class SessionUtil {
     }
 
     public static User getLoggedInUser(String token) {
-            return session.get(token).getUser();
+        return session.get(token).getUser();
     }
 
     private static String generateToken() {
