@@ -20,12 +20,12 @@ public class TokenAspect {
         if(isTokenRequired(pjp)) {
             String token = findToken(pjp);
             if (StringUtils.isEmpty(token)) {
-                return new ErrorWrapper(new Error(Error.Type.TOKEN_INVALID, "Invalid token!"));
+                return new ErrorWrapper(new Error(Error.Type.TOKEN_INVALID));
             }
             if(SessionUtil.isUserLoggedIn(token)) {
                 return pjp.proceed();
             } else {
-                return new ErrorWrapper(new Error(Error.Type.TOKEN_EXPIRED, "Expired token!"));
+                return new ErrorWrapper(new Error(Error.Type.TOKEN_EXPIRED));
             }
         }
         return pjp.proceed();

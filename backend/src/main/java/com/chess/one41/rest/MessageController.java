@@ -58,7 +58,7 @@ public class MessageController {
         User user = SessionUtil.getLoggedInUser(messageDto.getToken());
 
         if (message == null || !message.getUser().getId().equals(user.getId())) {
-            return new ErrorWrapper(new Error(Error.Type.INVALID_OPERATION, ""));
+            return new ErrorWrapper(new Error(Error.Type.INVALID_OPERATION));
         }
 
         messageService.deleteEntity(message);

@@ -15,19 +15,11 @@ public class Error implements Response {
     @JsonProperty(value = "errortype")
     private final Type errorType;
 
-    @JsonProperty(value = "additionalmessage")
-    private final String additionalMessage;
-
-    public Error(Type errorType, String additionalMessage) {
+    public Error(Type errorType) {
         this.errorType = errorType;
-        this.additionalMessage = additionalMessage;
     }
 
     public Type getErrorType() {
         return errorType;
-    }
-
-    public String getAdditionalMessage() {
-        return additionalMessage;
     }
 }
