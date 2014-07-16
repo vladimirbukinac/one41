@@ -6,6 +6,7 @@
             <th>USER ID</th>
             <th>POST TEXT</th>
             <th>CREATED</th>
+            <th></th>
         </tr>
         </thead>
         <tbody ng-repeat="post in listOfPosts">
@@ -14,6 +15,7 @@
             <td>{{post.message.userId}}</td>
             <td>{{post.message.text}}</td>
             <td>{{post.message.creationDate}}</td>
+            <td><button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)" ng-show="isUsersPost(post.message)">-</button></td>
         </tr>
         </tbody>
     </table>

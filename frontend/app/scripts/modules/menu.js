@@ -26,11 +26,17 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
     datetimeRefresh = $interval(function() {
         $scope.datetime = getCurrentTimeInFormatHMS(new Date());
     }, 1000);
+
 }])
 
-.controller('LoginCtrl', ['$scope', '$modal', '$log', '$cookieStore', 'UserService', function ($scope, $modal, $log, $cookieStore, UserService) {
+.controller('LoginCtrl', ['$scope', '$modal', '$log', '$cookieStore', '$timeout', 'UserService', function ($scope, $modal, $log, $cookieStore, $timeout, UserService) {
+    var initUser;
 
-    $scope.open = function () {
+    initUser = $timeout(function() {
+        $scope.user = UserService.getUser();
+    }, 100);
+
+    $scope.login = function () {
         $scope.user = {};
         $scope.user.username = '';
         $scope.user.password = '';

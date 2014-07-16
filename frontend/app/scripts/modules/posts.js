@@ -17,9 +17,13 @@ angular.module('mPosts', ['mServices'])
             $scope.getPosts();
         }, 30000);
 
-        $scope.getPosts = function() {
-            //$log.info($scope.user.token);
+        function showAlert(type, message) {
+            $scope.status  = message;
+            $scope.showFeedback = true;
+            $scope.alertType = type;
+        }
 
+        $scope.getPosts = function() {
             // this should be without user token - now token is necessary
             if (UserService.isUserLogged()) {
                 PostService.getPosts(UserService.getUser().token).then(function (result) {
@@ -49,6 +53,14 @@ angular.module('mPosts', ['mServices'])
             }
         };
 
+        $scope.deletePost = function(list, post, index) {
+            PostService.deletePost(UserService.getUser().token, post.id).then(function () {
+                list.splice(index, 1);
+            }, function (e) {
+                showAlert('error', e);
+            });
+        };
+
         $scope.$on('UserStatusChanged', function(){
             $scope.getPosts();
         });
@@ -57,10 +69,15 @@ angular.module('mPosts', ['mServices'])
             $scope.showFeedback = false;
         };
 
-        function showAlert(type, message) {
-            $scope.status  = message;
-            $scope.showFeedback = true;
-            $scope.alertType = type;
-        }
+        $scope.isUserLogged = function() {
+            return UserService.isUserLogged();
+        };
 
+        $scope.isUsersPost = function(post) {
+            if (UserService.getUser().id === post.userId) {
+                return true;
+            } else {
+                return false;
+            }
+        };
     }]);
