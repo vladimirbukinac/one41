@@ -15,7 +15,7 @@ angular.module('mPosts', ['mServices'])
 
         postsRefresh = $interval(function() {
             $scope.getPosts();
-        }, 10000);
+        }, 30000);
 
         $scope.getPosts = function() {
             //$log.info($scope.user.token);
@@ -35,6 +35,7 @@ angular.module('mPosts', ['mServices'])
                         $scope.listOfPosts = null;
                     }
 
+                    // this is not needed just to have some message
                     if (result.length === 0) {
                         showAlert('warning', 'No messages!');
                     } else {
@@ -43,8 +44,14 @@ angular.module('mPosts', ['mServices'])
                 }, function (e) {
                     showAlert('error', e);
                 });
+            } else { //this is write now just for fun, if user is not logged
+                $scope.listOfPosts = null;
             }
         };
+
+        $scope.$on('UserStatusChanged', function(){
+            $scope.getPosts();
+        });
 
         $scope.closeAlert = function(){
             $scope.showFeedback = false;

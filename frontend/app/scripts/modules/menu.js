@@ -28,7 +28,7 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
     }, 1000);
 }])
 
-.controller('LoginCtrl', ['$scope', '$modal', '$log', '$cookieStore'/*, 'user'*/, 'UserService', function ($scope, $modal, $log, $cookieStore/*, userOfmMenu*/, UserService) {
+.controller('LoginCtrl', ['$scope', '$modal', '$log', '$cookieStore', 'UserService', function ($scope, $modal, $log, $cookieStore, UserService) {
 
     $scope.open = function () {
         $scope.user = {};
@@ -51,7 +51,7 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
         loginModalInstance.result.then(function (response) {
             $scope.user = response.user;
             UserService.setUser($scope.user);
-
+            UserService.broadcastUserStatusChanged();
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
@@ -60,18 +60,14 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
     $scope.logout = function () {
         $scope.user = {};
         UserService.setUser($scope.user);
+        UserService.broadcastUserStatusChanged();
     };
 
-    $scope.isUserLogged = function() {
-        if (UserService.isUserLogged()) {
-            //this is not good - $scope.user should be initialized on other place
-            if (angular.equals($scope.user, undefined) || angular.equals($scope.user, {}) || angular.equals($scope.user, null) || angular.equals($scope.user, '')) {
-                $scope.user = UserService.getUser();
-            }
+    $scope.$on('UserStatusChanged', function(){
+        $scope.user = UserService.getUser();
+    });
 
-            return true;
-        } else {
-            return false;
-        }
+    $scope.isUserLogged = function() {
+        return UserService.isUserLogged();
     };
 }]);

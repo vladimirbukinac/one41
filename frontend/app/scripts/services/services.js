@@ -11,7 +11,7 @@ angular.module('mServices', [])
 .value('user', {})
 .value('firstTimeCookeiCheck', true)
 
-.factory('UserService', ['$cookieStore', 'user', 'firstTimeCookeiCheck', function($cookieStore, user, firstTimeCookeiCheck) {
+.factory('UserService', ['$rootScope', '$cookieStore', 'user', 'firstTimeCookeiCheck', function($rootScope, $cookieStore, user, firstTimeCookeiCheck) {
 
     return {
         getUser: function() {
@@ -43,6 +43,11 @@ angular.module('mServices', [])
             } else {
                 return true;
             }
+        },
+
+        broadcastUserStatusChanged: function() {
+            $rootScope.$broadcast('UserStatusChanged');
         }
     };
 }]);
+
