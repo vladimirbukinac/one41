@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName(value = "token")
-public class TokenEntity {
+public class TokenEntity implements Response {
 
     private String token;
 

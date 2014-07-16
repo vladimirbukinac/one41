@@ -1,11 +1,15 @@
 package com.chess.one41.rest;
 
+import com.chess.one41.rest.model.Response;
 import com.chess.one41.rest.model.TokenEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import com.chess.one41.rest.model.Error;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 
@@ -15,10 +19,14 @@ public class TokenAspect {
     @Around(value = "@within(com.chess.one41.rest.Token) || @annotation(com.chess.one41.rest.Token)")
     public Object validateToken(ProceedingJoinPoint pjp) throws Throwable {
         if(isTokenRequired(pjp)) {
-            if(SessionUtil.isUserLoggedIn(findToken(pjp))) {
+            String token = findToken(pjp);
+            if (StringUtils.isEmpty(token)) {
+                return new ErrorWrapper(new Error(Error.Type.TOKEN_INVALID, "Invalid token!"));
+            }
+            if(SessionUtil.isUserLoggedIn(token)) {
                 return pjp.proceed();
             } else {
-                return null;
+                return new ErrorWrapper(new Error(Error.Type.TOKEN_EXPIRED, "Expired token!"));
             }
         }
         return pjp.proceed();
@@ -50,5 +58,14 @@ public class TokenAspect {
             }
         }
         return null;
+    }
+
+    private static class ErrorWrapper implements Response {
+        @JsonProperty(value = "error")
+        private final Error error;
+
+        public ErrorWrapper(Error error) {
+            this.error = error;
+        }
     }
 }
