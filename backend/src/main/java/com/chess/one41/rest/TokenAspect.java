@@ -1,14 +1,13 @@
 package com.chess.one41.rest;
 
-import com.chess.one41.rest.model.Response;
+import com.chess.one41.rest.model.Error;
+import com.chess.one41.rest.model.ErrorWrapper;
 import com.chess.one41.rest.model.TokenEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import com.chess.one41.rest.model.Error;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -58,14 +57,5 @@ public class TokenAspect {
             }
         }
         return null;
-    }
-
-    private static class ErrorWrapper implements Response {
-        @JsonProperty(value = "error")
-        private final Error error;
-
-        public ErrorWrapper(Error error) {
-            this.error = error;
-        }
     }
 }

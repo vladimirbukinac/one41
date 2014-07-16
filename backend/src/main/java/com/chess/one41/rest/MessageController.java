@@ -1,10 +1,9 @@
 package com.chess.one41.rest;
 
 import com.chess.one41.backend.entity.Message;
+import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.MessageService;
-import com.chess.one41.rest.model.MessageDto;
-import com.chess.one41.rest.model.Response;
-import com.chess.one41.rest.model.TokenEntity;
+import com.chess.one41.rest.model.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.beans.BeanUtils;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.chess.one41.rest.model.Error;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,14 +52,18 @@ public class MessageController {
         messageService.createEntity(message);
     }
 
-    @RequestMapping(value="/get", method= {RequestMethod.GET, RequestMethod.POST})
-    @Token(required = false)
-    public Response getMessage() {
-        Message message = messageService.getEntity(1L);
-        MessageDto messageDto = new MessageDto();
+    @RequestMapping(value="/delete", method= {RequestMethod.GET, RequestMethod.POST})
+    public Response deleteMessage(@RequestBody MessageDto messageDto) {
+        Message message = messageService.getEntity(messageDto.getId());
+        User user = SessionUtil.getLoggedInUser(messageDto.getToken());
 
-        BeanUtils.copyProperties(message, messageDto);
-        return new ResponseWrapper(messageDto);
+        if (message == null || !message.getUser().getId().equals(user.getId())) {
+            return new ErrorWrapper(new Error(Error.Type.INVALID_OPERATION, ""));
+        }
+
+        messageService.deleteEntity(message);
+
+        return null;
     }
 
 

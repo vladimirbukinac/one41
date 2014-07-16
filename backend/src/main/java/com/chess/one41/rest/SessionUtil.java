@@ -37,6 +37,10 @@ public class SessionUtil {
         return sessionToken;
     }
 
+    public static User getLoggedInUser(String token) {
+            return session.get(token).getUser();
+    }
+
     private static String generateToken() {
         return UUID.randomUUID().toString();
     }

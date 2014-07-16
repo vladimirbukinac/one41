@@ -25,4 +25,8 @@ public class SessionInfo {
 
         return expired;
     }
+
+    public User getUser() {
+        return user;
+    }
 }

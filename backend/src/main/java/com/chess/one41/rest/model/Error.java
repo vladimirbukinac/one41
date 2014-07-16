@@ -8,7 +8,8 @@ public class Error implements Response {
 
     public enum Type {
         TOKEN_EXPIRED,
-        TOKEN_INVALID
+        TOKEN_INVALID,
+        INVALID_OPERATION
     }
 
     @JsonProperty(value = "errortype")
