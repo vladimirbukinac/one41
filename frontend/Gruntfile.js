@@ -400,7 +400,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer',
-      'configureProxies:server', // added just before connect
+      //'configureProxies:server', // added just before connect
       'connect:livereload',
       'watch'
     ]);

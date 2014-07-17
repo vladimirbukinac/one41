@@ -11,7 +11,7 @@ angular.module('mServices')
             var deferred = $q.defer();
             var data = {'token': {'token': token}};
 
-            $http.post('/rest/message/latest', data)
+            $http.post('http://localhost:8080/rest/message/latest', data)
                 .success(function (data) {
                     deferred.resolve(data);
                 })
