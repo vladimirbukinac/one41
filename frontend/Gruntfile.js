@@ -362,6 +362,31 @@ module.exports = function (grunt) {
         singleRun: true
       }
     }
+
+      ,war: {
+          target: {
+              options: {
+                  war_dist_folder: 'dist',
+                  war_verbose: true,
+                  war_name: 'frontend',
+                  webxml_welcome: 'index.html',
+                  webxml_display_name: 'one41',
+                  webxml_mime_mapping: [
+                      {
+                          extension: 'woff',
+                          mime_type: 'application/font-woff'
+                      } ]
+              },
+              files: [
+                  {
+                      expand: true,
+                      cwd: 'dist',
+                      src: ['**'],
+                      dest: ''
+                  }
+              ]
+          }
+      }
   });
 
 
@@ -408,7 +433,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'war'
   ]);
 
   grunt.registerTask('default', [
