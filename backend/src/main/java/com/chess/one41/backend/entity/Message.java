@@ -2,6 +2,7 @@ package com.chess.one41.backend.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Message {
@@ -25,6 +26,9 @@ public class Message {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date creationDate;
+
+    @OneToMany(mappedBy = "message", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Image> images;
 
     public Long getId() {
         return id;
@@ -64,5 +68,13 @@ public class Message {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

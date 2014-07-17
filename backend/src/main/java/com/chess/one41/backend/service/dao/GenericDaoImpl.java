@@ -1,13 +1,13 @@
 package com.chess.one41.backend.service.dao;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 public abstract class GenericDaoImpl<E, K extends Serializable> implements GenericDao<E, K> {
 
@@ -23,12 +23,12 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 
 	@Override
 	public void create(E entity) {
-		getCurrentSession().save(entity);
+		getCurrentSession().persist(entity);
 	}
 
 	@Override
 	public void update(E entity) {
-		getCurrentSession().saveOrUpdate(entity);
+		getCurrentSession().update(entity);
 	}
 
 	@Override

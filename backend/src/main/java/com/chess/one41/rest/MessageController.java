@@ -1,8 +1,10 @@
 package com.chess.one41.rest;
 
+import com.chess.one41.backend.entity.Image;
 import com.chess.one41.backend.entity.Message;
 import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.MessageService;
+import com.chess.one41.rest.model.Error;
 import com.chess.one41.rest.model.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.chess.one41.rest.model.Error;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class MessageController {
             MessageDto messageDto = new MessageDto();
             BeanUtils.copyProperties(latestMessages.get(i) , messageDto);
             messageDto.setUserId(latestMessages.get(i).getUser().getId());
+            messageDto.setImages(new ArrayList<ImageDto>());
             latestMessagesDto.add(messageDto);
         }
 
@@ -48,6 +50,17 @@ public class MessageController {
     public void createMessage(@RequestBody MessageDto messageDto) {
         Message message = new Message();
         BeanUtils.copyProperties(messageDto, message);
+
+        List<Image> images = new ArrayList<Image>();
+        for (ImageDto imageDto : messageDto.getImages()) {
+            Image image = new Image();
+            BeanUtils.copyProperties(imageDto, image);
+            image.setMessage(message);
+            images.add(image);
+        }
+        message.setImages(images);
+
+        message.setUserId(SessionUtil.getLoggedInUser(messageDto.getToken()).getId());
 
         messageService.createEntity(message);
     }
@@ -64,6 +77,22 @@ public class MessageController {
         messageService.deleteEntity(message);
 
         return null;
+    }
+
+    @RequestMapping(value="/get",  method= {RequestMethod.GET, RequestMethod.POST})
+    public Response getMessageWithImages(@RequestBody MessageDto messageDto) {
+        Message message = messageService.getMessageWithImages(messageDto.getId());
+        BeanUtils.copyProperties(message, messageDto);
+
+        List<ImageDto> imagesDto = new ArrayList<ImageDto>();
+        for (Image image : message.getImages()) {
+            ImageDto imageDto = new ImageDto();
+            BeanUtils.copyProperties(image, imageDto);
+            imagesDto.add(imageDto);
+        }
+        messageDto.setImages(imagesDto);
+
+        return new ResponseWrapper(messageDto);
     }
 
 

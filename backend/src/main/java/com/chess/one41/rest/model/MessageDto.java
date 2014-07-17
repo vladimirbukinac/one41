@@ -1,9 +1,9 @@
 package com.chess.one41.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @JsonRootName(value = "message")
 @JsonTypeName(value = "message")
@@ -16,6 +16,9 @@ public class MessageDto extends TokenEntity {
     private String text;
 
     private Date creationDate;
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include= JsonTypeInfo.As.WRAPPER_OBJECT)
+    private List<ImageDto> images;
 
     public Long getId() {
         return id;
@@ -47,5 +50,13 @@ public class MessageDto extends TokenEntity {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public List<ImageDto> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ImageDto> images) {
+        this.images = images;
     }
 }

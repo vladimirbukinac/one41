@@ -34,6 +34,13 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, Long> implem
     }
 
     @Override
+    public Message getMessageWithImages(Long messageId) {
+        Message message = messageDao.findById(messageId);
+        message.getImages().iterator(); // lazy-load image collection
+        return message;
+    }
+
+    @Override
     protected GenericDao<Message, Long> getDao() {
         return messageDao;
     }
