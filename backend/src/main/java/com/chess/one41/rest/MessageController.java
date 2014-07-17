@@ -8,10 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.chess.one41.rest.model.Error;
 
 import java.util.ArrayList;
@@ -19,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rest/message")
-@Token
 public class MessageController {
 
     @Autowired
@@ -27,6 +23,25 @@ public class MessageController {
 
     @RequestMapping(value="/latest", method= {RequestMethod.GET, RequestMethod.POST})
     public Response getLatestMessages(@RequestBody TokenEntity token) {
+        List<Message> latestMessages = messageService.getLatestMessages();
+
+        if (latestMessages == null) {
+            return null;
+        }
+
+        List<MessageDto> latestMessagesDto = new ArrayList<MessageDto>();
+        for(int i = 0; i < latestMessages.size(); i++){
+            MessageDto messageDto = new MessageDto();
+            BeanUtils.copyProperties(latestMessages.get(i) , messageDto);
+            messageDto.setUserId(latestMessages.get(i).getUser().getId());
+            latestMessagesDto.add(messageDto);
+        }
+
+        return new ResponseListWrapper(latestMessagesDto);
+    }
+
+    @RequestMapping(value="/latestJsonp", method= {RequestMethod.GET})
+    public Response getLatestMessagesJsonp(@RequestParam String token) {
         List<Message> latestMessages = messageService.getLatestMessages();
 
         if (latestMessages == null) {

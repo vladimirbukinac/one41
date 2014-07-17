@@ -11,9 +11,9 @@ angular.module('mServices')
             var deferred = $q.defer();
             var data = {'token': {'token': token}};
 
-            $http.post('/rest/message/latest', data)
+            $http.jsonp('/rest/message/latestJsonp?callback=JSON_CALLBACK&token=' + token, data)
                 .success(function (data) {
-                    deferred.resolve(data);
+                   deferred.resolve(data);
                 })
                 .error(function (status) {
                     deferred.reject(status);

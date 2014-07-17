@@ -43,5 +43,7 @@
 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+    <bean class="com.chess.one41.rest.JsonpCallbackFilter" id="jsonpCallbackFilter" />
 	
 </beans>

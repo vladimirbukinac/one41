@@ -24,5 +24,15 @@
 		<servlet-name>one41</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
+    <filter>
+        <filter-name>jsonpCallbackFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>jsonpCallbackFilter</filter-name>
+        <url-pattern>/rest/*</url-pattern>
+    </filter-mapping>
   
 </web-app>
