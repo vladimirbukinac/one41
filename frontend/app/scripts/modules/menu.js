@@ -14,17 +14,12 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
     }])
 
 .controller('DateTimeCtrl', ['$scope', '$interval', 'feDateService', function($scope, $interval, feDateService) {
-
-    function getCurrentTimeInFormatHMS(datetime){
-        return feDateService.getCurrentTimeInFormatHMS(datetime);
-    }
-
     var datetimeRefresh;
 
-    $scope.datetime = getCurrentTimeInFormatHMS(new Date());
+    $scope.datetime = feDateService.getCurrentTimeInFormatHMS(new Date());
 
     datetimeRefresh = $interval(function() {
-        $scope.datetime = getCurrentTimeInFormatHMS(new Date());
+        $scope.datetime = feDateService.getCurrentTimeInFormatHMS(new Date());
     }, 1000);
 
 }])

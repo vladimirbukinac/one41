@@ -21,7 +21,7 @@ describe('Controller: PostsCtrl', function () {
           UserService: UserService,
           PostService: PostService,
           feDateService: feDateService
-    })
+    });
   }));
 
   it('should attach name', function () {

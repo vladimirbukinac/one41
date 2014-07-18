@@ -27,11 +27,11 @@ angular.module('mPosts', ['mServices'])
             // this should be without user token - now token is necessary
             if (UserService.isUserLogged()) {
                 PostService.getPosts(UserService.getUser().token).then(function (result) {
-                    //$log.info(result);
-
                     if (!(angular.equals(result, null) || angular.equals(result, {}) || angular.equals(result, undefined) || angular.equals(result, ''))) {
                         for (var i = 0; i < result.messages.length; i++){
                             result.messages[i].message.creationDate = feDateService.getCurrentDateTimeInFormatDMYHMS(new Date(result.messages[i].message.creationDate));
+
+                            $scope.getMessageWithImages(result.messages[i].message);
                         }
 
                         $scope.listOfPosts = result.messages;
@@ -48,9 +48,18 @@ angular.module('mPosts', ['mServices'])
                 }, function (e) {
                     showAlert('error', e);
                 });
-            } else { //this is write now just for fun, if user is not logged
+            } else {
                 $scope.listOfPosts = null;
             }
+        };
+
+        $scope.getMessageWithImages = function(post) {
+            PostService.getMessageWithImages(UserService.getUser().token, post.id).then(function (result) {
+                console.log(result);
+
+            }, function (e) {
+                showAlert('error', e);
+            });
         };
 
         $scope.deletePost = function(list, post, index) {

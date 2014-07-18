@@ -3,29 +3,36 @@
 describe('Controller: DateTimeCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('mMenu'));
-  //beforeEach(module('ui.bootstrap'));
-  //beforeEach(module('mServices'));
+    beforeEach(module('mMenu'));
+    beforeEach(function() {
+        var feDateServiceMock = jasmine.createSpyObj('feDateServiceMock', ['getCurrentDateTimeInFormatDMYHMS', 'getCurrentTimeInFormatHMS']);
 
+        feDateServiceMock.getCurrentDateTimeInFormatDMYHMS.andCallFake(function () {
+            return '18.07.2014 14:54:32';
+        });
 
-  var DateTimeCtrl,
-    scope, interval, service;
+        feDateServiceMock.getCurrentTimeInFormatHMS.andCallFake(function () {
+            return '18.07.2014';
+        });
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $interval, feDateService) {
-    //console.log('*** IN INJECT!!***: ', feDateService);
-    scope = $rootScope.$new();
-    interval = $interval;
-    service = feDateService;
-    DateTimeCtrl = $controller('DateTimeCtrl', {
-      $scope: scope,
-      $interval: interval,
-      feDateService: service
+        module(function ($provide) {
+            $provide.value('feDateServiceMock', feDateServiceMock);
+        });
     });
-  }));
 
-  it('datetime should not be null', function () {
-    console.log(scope.datetime);
-    expect(scope.datetime).toNotBe(null);
-  });
+    var DateTimeCtrl, scope;
+
+    // Initialize the controller and a mock scope
+    beforeEach(inject(function ($controller, $rootScope, $interval, feDateServiceMock) {
+    scope = $rootScope.$new();
+    DateTimeCtrl = $controller('DateTimeCtrl', {
+            $scope: scope,
+            $interval: $interval,
+            feDateService: feDateServiceMock
+        });
+    }));
+
+    it('datetime should not be null', function () {
+        expect(scope.datetime).toBe('18.07.2014');
+    });
 });

@@ -35,6 +35,22 @@ angular.module('mServices')
                 });
 
             return deferred.promise;
+        },
+
+        getMessageWithImages: function (token, id) {
+            var deferred = $q.defer();
+            var data = {'message': {'id': id, 'token': token}};
+
+            $http.post('/rest/message/get', data)
+                .success(function (data) {
+                    //console.log(data);
+                    deferred.resolve(data);
+                })
+                .error(function (status) {
+                    deferred.reject(status);
+                });
+
+            return deferred.promise;
         }
     };
 }]);
