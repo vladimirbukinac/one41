@@ -4,23 +4,24 @@ import com.chess.one41.backend.entity.Image;
 import com.chess.one41.backend.entity.Message;
 import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.MessageService;
-import com.chess.one41.rest.model.Error;
-import com.chess.one41.rest.model.*;
+import com.chess.one41.backend.service.exception.EntityNotFoundException;
+import com.chess.one41.backend.service.exception.ServiceException;
+import com.chess.one41.rest.model.ImageDto;
+import com.chess.one41.rest.model.MessageDto;
+import com.chess.one41.rest.model.Response;
+import com.chess.one41.rest.model.TokenEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Token
 @RestController
 @RequestMapping("/rest/message")
-@Token
 public class MessageController {
 
     @Autowired
@@ -47,7 +48,7 @@ public class MessageController {
     }
 
     @RequestMapping(value="/create", method= {RequestMethod.GET, RequestMethod.POST})
-    public void createMessage(@RequestBody MessageDto messageDto) {
+    public void createMessage(@RequestBody MessageDto messageDto) throws EntityNotFoundException {
         Message message = new Message();
         BeanUtils.copyProperties(messageDto, message);
 
@@ -66,21 +67,15 @@ public class MessageController {
     }
 
     @RequestMapping(value="/delete", method= {RequestMethod.GET, RequestMethod.POST})
-    public Response deleteMessage(@RequestBody MessageDto messageDto) {
-        Message message = messageService.getEntity(messageDto.getId());
+    public Response deleteMessage(@RequestBody MessageDto messageDto) throws ServiceException {
         User user = SessionUtil.getLoggedInUser(messageDto.getToken());
-
-        if (message == null || !message.getUser().getId().equals(user.getId())) {
-            return new ErrorWrapper(new Error(Error.Type.INVALID_OPERATION));
-        }
-
-        messageService.deleteEntity(message);
+        messageService.deleteMessage(messageDto.getId(), user.getId());
 
         return null;
     }
 
     @RequestMapping(value="/get",  method= {RequestMethod.GET, RequestMethod.POST})
-    public Response getMessageWithImages(@RequestBody MessageDto messageDto) {
+    public Response getMessageWithImages(@RequestBody MessageDto messageDto) throws EntityNotFoundException {
         Message message = messageService.getMessageWithImages(messageDto.getId());
         BeanUtils.copyProperties(message, messageDto);
 

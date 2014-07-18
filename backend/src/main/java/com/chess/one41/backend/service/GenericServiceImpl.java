@@ -1,10 +1,10 @@
 package com.chess.one41.backend.service;
 
-import java.util.List;
-
+import com.chess.one41.backend.service.dao.GenericDao;
+import com.chess.one41.backend.service.exception.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.chess.one41.backend.service.dao.GenericDao;
+import java.util.List;
 
 @Transactional
 public abstract class GenericServiceImpl<E, K> implements GenericService<E, K> {
@@ -12,7 +12,7 @@ public abstract class GenericServiceImpl<E, K> implements GenericService<E, K> {
 	protected abstract GenericDao<E, K> getDao();
 	
 	@Override
-	public void createEntity(E entity) {
+	public void createEntity(E entity) throws EntityNotFoundException {
 		getDao().create(entity);
 	}
 
@@ -28,8 +28,13 @@ public abstract class GenericServiceImpl<E, K> implements GenericService<E, K> {
 
 	@Transactional(readOnly = true)
 	@Override
-	public E getEntity(K key) {
-		return getDao().findById(key);
+	public E getEntity(K key) throws EntityNotFoundException {
+		E entity = getDao().findById(key);
+        if (entity == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return entity;
 	}
 
 	@Transactional(readOnly = true)

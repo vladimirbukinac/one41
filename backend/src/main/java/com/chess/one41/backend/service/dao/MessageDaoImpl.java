@@ -18,4 +18,11 @@ public class MessageDaoImpl extends GenericDaoImpl<Message, Long> implements Mes
 
         return (List<Message>) criteria.list();
     }
+
+    @Override
+    public Message getMessageWithImages(Long messageId) {
+        Message message = findById(messageId);
+        message.getImages().iterator(); // lazy-load image collection
+        return message;
+    }
 }

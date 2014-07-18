@@ -7,4 +7,6 @@ import java.util.List;
 public interface MessageDao extends GenericDao<Message, Long> {
 
     List<Message> getLatestMessages();
+
+    Message getMessageWithImages(Long messageId);
 }

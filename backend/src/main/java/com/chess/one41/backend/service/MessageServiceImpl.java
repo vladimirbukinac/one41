@@ -4,6 +4,8 @@ import com.chess.one41.backend.entity.Message;
 import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.dao.GenericDao;
 import com.chess.one41.backend.service.dao.MessageDao;
+import com.chess.one41.backend.service.exception.EntityNotFoundException;
+import com.chess.one41.backend.service.exception.IllegalOperationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, Long> implem
     private UserService userService;
 
     @Override
-    public void createEntity(Message message) {
+    public void createEntity(Message message) throws EntityNotFoundException {
         User user = userService.getEntity(message.getUserId());
         message.setUser(user);
         message.setCreationDate(new Date());
@@ -34,10 +36,19 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, Long> implem
     }
 
     @Override
-    public Message getMessageWithImages(Long messageId) {
-        Message message = messageDao.findById(messageId);
-        message.getImages().iterator(); // lazy-load image collection
-        return message;
+    public Message getMessageWithImages(Long messageId) throws EntityNotFoundException {
+        getEntity(messageId); // check if message exists
+        return messageDao.getMessageWithImages(messageId);
+    }
+
+    @Override
+    public void deleteMessage(Long messageId, Long userId) throws EntityNotFoundException, IllegalOperationException {
+        Message message = getEntity(messageId);
+        if (!message.getUser().getId().equals(userId)) {
+            throw new IllegalOperationException();
+        }
+
+        deleteEntity(message);
     }
 
     @Override
