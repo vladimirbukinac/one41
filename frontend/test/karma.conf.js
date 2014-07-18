@@ -16,17 +16,37 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      <!-- bower:js -->
+      'bower_components/jquery/dist/jquery.js',
+      'bower_components/es5-shim/es5-shim.js',
       'bower_components/angular/angular.js',
-      'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-animate/angular-animate.js',
-      'bower_components/angular-cookies/angular-cookies.js',
+      'bower_components/json3/lib/json3.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-resource/angular-resource.js',
-      'bower_components/angular-route/angular-route.js',
+      'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-touch/angular-touch.js',
-      'bower_components/angular-bootstrap/ui-bootstrap.js',
-      'app/scripts/**/*.js',
-      'test/mock/**/*.js',
+      'bower_components/angular-route/angular-route.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      <!-- endbower -->
+
+      <!-- Manually define devDependencies from bower.json since wiredep doesnt copy them -->
+      'bower_components/angular-mocks/angular-mocks.js',
+
+
+      <!-- Manually list javascripts from index.html in the same order to ensure correct javascript file import order -->
+      'app/scripts/app.js',
+      'app/scripts/modules/menu.js',
+      'app/scripts/modules/login.js',
+      'app/scripts/modules/posts.js',
+      'app/scripts/modules/newPost.js',
+      'app/scripts/modules/profile.js',
+      'app/scripts/services/services.js',
+      'app/scripts/services/feDateService.js',
+      'app/scripts/services/loginService.js',
+      'app/scripts/services/postService.js',
+
       'test/spec/**/*.js'
     ],
 

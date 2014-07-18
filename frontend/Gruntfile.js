@@ -174,7 +174,22 @@ module.exports = function (grunt) {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//
-      }
+      },
+        test: {
+            src: ['<%= yeoman.app %>/../test/karma.conf.js'],
+            ignorePath:  /\.\.\//,
+            fileTypes: {
+                js: {
+                    block: /(([ \t]*)<!--\s*bower:*(\S*)\s*-->)(\n|\r|.)*?(<!--\s*endbower\s*-->)/gi,
+                    detect: {
+                        js: /<script.*src=['"](.+)['"]>/gi
+                    },
+                    replace: {
+                        js: '\'{{filePath}}\','
+                    }
+                }
+            }
+        }
     },
 
     // Renames files for browser caching purposes
