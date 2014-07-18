@@ -4,8 +4,8 @@ describe('Controller: DateTimeCtrl', function () {
 
   // load the controller's module
   beforeEach(module('mMenu'));
-  beforeEach(module('ui.bootstrap'));
-  beforeEach(module('one41feApp'));
+  //beforeEach(module('ui.bootstrap'));
+  //beforeEach(module('mServices'));
 
 
   var DateTimeCtrl,
@@ -24,7 +24,8 @@ describe('Controller: DateTimeCtrl', function () {
     });
   }));
 
-  it('should attach datetime', function () {
+  it('datetime should not be null', function () {
+    console.log(scope.datetime);
     expect(scope.datetime).toNotBe(null);
   });
 });
