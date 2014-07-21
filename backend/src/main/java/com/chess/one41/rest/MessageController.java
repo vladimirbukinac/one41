@@ -48,7 +48,7 @@ public class MessageController {
     }
 
     @RequestMapping(value="/create", method= {RequestMethod.GET, RequestMethod.POST})
-    public void createMessage(@RequestBody MessageDto messageDto) throws EntityNotFoundException {
+    public Response createMessage(@RequestBody MessageDto messageDto) throws EntityNotFoundException {
         Message message = new Message();
         BeanUtils.copyProperties(messageDto, message);
 
@@ -64,6 +64,8 @@ public class MessageController {
         message.setUserId(SessionUtil.getLoggedInUser(messageDto.getToken()).getId());
 
         messageService.createEntity(message);
+
+        return null;
     }
 
     @RequestMapping(value="/delete", method= {RequestMethod.GET, RequestMethod.POST})

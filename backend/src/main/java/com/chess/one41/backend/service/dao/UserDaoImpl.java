@@ -17,4 +17,12 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
         return (User) criteria.uniqueResult();
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        Criteria criteria = createCriteria();
+        criteria.add(Restrictions.eq(User.EMAIL, email));
+
+        return (User) criteria.uniqueResult();
+    }
 }
