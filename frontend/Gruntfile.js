@@ -124,7 +124,6 @@ module.exports = function (grunt) {
       },
       all: {
         src: [
-          'Gruntfile.js',
           '<%= yeoman.app %>/scripts/{,*/}*.js'
         ]
       },
@@ -133,7 +132,13 @@ module.exports = function (grunt) {
           jshintrc: 'test/.jshintrc'
         },
         src: ['test/spec/{,*/}*.js']
-      }
+      },
+      gruntfile: {
+            options: {
+                jshintrc: '.jshintrcForGruntfile' // Ignores camelCase warnings
+            },
+            src: ['gruntfile.js']
+        }
     },
 
     // Empties folders to start fresh
@@ -376,9 +381,9 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
-    }
+    },
 
-      ,war: {
+    war: {
           target: {
               options: {
                   war_dist_folder: 'dist',
