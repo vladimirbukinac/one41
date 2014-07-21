@@ -36,7 +36,7 @@ The frontend app should be visible on [http://localhost:9000](http://localhost:9
 Steps for deploying the application to staging environment:
 ===
 1. cd to one41/backend  run <code>mvn clean install</code>  this creates a war file /target/one41backend-1.0.0-SNAPSHOT.war
-2. cd to one41/frontend run <code>grunt war</code> this creates a war file  /frontend/dist/frontend.war
+2. cd to one41/frontend run <code>grunt</code> this rebuilds the project and creates a war file  /frontend/dist/frontend.war . Alternatively, just run <code>grunt war</code> to build a .war file from files currently contained in 'dist' folder.
 3. copy frontend.war to tomcat/webapps folder
 4. copy and rename one41backend-1.0.0-SNAPSHOT.war to tomcat/webapps/ROOT.war
 5. start tomcat
@@ -44,3 +44,11 @@ Steps for deploying the application to staging environment:
 * Note that the backend webapp must be deployed as ROOT app because rest api call paths are hardcoded in frontend application code (e.g. to to "/rest/messages/latest")
 * This should be changed to be parametrizable and CORS (or JSONP) should also be supported.
 
+
+Yeoman upgrades
+===
+
+1. Added <code>grunt-connect-proxy</code> for rerouting rest requests to backend server when running the frontend app using "grunt serve".
+   This bypasses cross-domain issues when backend and frontend apps are not running on the same server/port. This is used for development purposes.
+2. Added <code>grunt-war</code> task for creating a war file from "dist" frontend code.
+2.1 Also changed jsHint rules for Gruntfile.js because grunt-war doesn't follow CamelCase naming convention for it's configuration parameters.
