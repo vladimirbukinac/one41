@@ -13,6 +13,10 @@ angular.module('mPosts', ['mServices'])
 
         var postsRefresh;
 
+        $scope.showImage = function(image) {
+            $scope.someImage = 'data:image/*;base64,'+image;
+        };
+
         postsRefresh = $interval(function() {
             $scope.getPosts();
         }, 30000);
@@ -55,8 +59,7 @@ angular.module('mPosts', ['mServices'])
 
         $scope.getMessageWithImages = function(post) {
             PostService.getMessageWithImages(UserService.getUser().token, post.id).then(function (result) {
-                console.log(result);
-
+                post.images = result.message.images;
             }, function (e) {
                 showAlert('error', e);
             });

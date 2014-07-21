@@ -43,7 +43,6 @@ angular.module('mServices')
 
             $http.post('/rest/message/get', data)
                 .success(function (data) {
-                    //console.log(data);
                     deferred.resolve(data);
                 })
                 .error(function (status) {

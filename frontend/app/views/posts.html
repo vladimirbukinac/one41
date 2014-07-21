@@ -1,23 +1,46 @@
 <div ng-controller="PostsCtrl" >
-    <table ng-init="getPosts()" class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>USER ID</th>
-            <th>POST TEXT</th>
-            <th>CREATED</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody ng-repeat="post in listOfPosts">
-        <tr>
-            <td>{{post.message.id}}</td>
-            <td>{{post.message.userId}}</td>
-            <td>{{post.message.text}}</td>
-            <td>{{post.message.creationDate}}</td>
-            <td><button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)" ng-show="isUsersPost(post.message)">-</button></td>
-        </tr>
-        </tbody>
-    </table>
+    <div>
+            <table ng-init="getPosts()" class="table">
+                <thead>
+                <tr>
+                    <th width="75px">USER ID</th>
+                    <th width="200px">POST TEXT</th>
+                    <th width="150px">CREATED</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="allRows">
+                <tr ng-repeat="post in listOfPosts" class="table;posts" ng-class="rowHighlight" ng-mouseenter="rowHighlight='mouseenterpostrow'" ng-mouseleave="rowHighlight='mouseleavepostrow'">
+                    <td id="{{post.message.id}}">{{post.message.userId}}</td>
+                    <td>{{post.message.text}}</td>
+                    <td>
+                        {{post.message.creationDate}}
+                        <div ng-repeat="images in post.message.images">
+                            <div id="{{images.image.id}}" style="float: right; width: 24px"><img src="images/image.png" ng-mouseover="showImage(images.image.image);"></div>
+                        </div>
+                    </td>
+                    <td><button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)" ng-show="isUsersPost(post.message)">-</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    <!--<div ng-init="getPosts()">
+        <div ng-repeat="post in listOfPosts">
+            <div class="posts" ng-class="rowHighlight" ng-mouseenter="rowHighlight='mouseenterpostrow'" ng-mouseleave="rowHighlight='mouseleavepostrow'">
+                <div id="{{post.message.id}}" style="float: left; width: 30px">{{post.message.userId}}</div>
+                <div style="float: left; width: 200px">{{post.message.text}}</div>
+                <div style="float: left; width: 150px">{{post.message.creationDate}}</div>
+                <div style="float: left; width: 25px"><button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)" ng-show="isUsersPost(post.message)">-</button></div>
+                <div>
+                    <div ng-repeat="images in post.message.images">
+                        <div id="{{post.message.id}}.{{images.image.id}}" style="float: right; width: 24px"><img src="images/image.png" ng-mouseover="showImage(images.image.image);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <div>
+        <img ng-src="{{someImage}}" style="width: 300px; height: 200px">
+    </div>
     <alert style="color: #FF0000; font-weight: bold; font-style: italic" ng-show=showFeedback close="closeAlert()" type=alertType>{{status}}</alert>
 </div>
