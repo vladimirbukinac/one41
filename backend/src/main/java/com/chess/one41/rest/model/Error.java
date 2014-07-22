@@ -11,7 +11,8 @@ public class Error implements Response {
         TOKEN_INVALID,
         SERVICE_ILLEGAL_OPERATION,
         SERVICE_EXCEPTION,
-        SERVICE_INTERNAL_ERROR
+        SERVICE_INTERNAL_ERROR,
+        AUTHENTICATE_INVALID_CREDENTIALS
     }
 
     @JsonProperty(value = "errortype")
