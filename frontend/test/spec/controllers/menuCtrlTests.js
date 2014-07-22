@@ -2,9 +2,9 @@
 
 describe('Controller: DateTimeCtrl', function () {
 
-  // load the controller's module
+    // load the controller's module
     beforeEach(module('mMenu'));
-    beforeEach(function() {
+    beforeEach(function () {
         var feDateServiceMock = jasmine.createSpyObj('feDateServiceMock', ['getCurrentDateTimeInFormatDMYHMS', 'getCurrentTimeInFormatHMS']);
 
         feDateServiceMock.getCurrentDateTimeInFormatDMYHMS.andCallFake(function () {
@@ -24,8 +24,8 @@ describe('Controller: DateTimeCtrl', function () {
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, $interval, feDateServiceMock) {
-    scope = $rootScope.$new();
-    DateTimeCtrl = $controller('DateTimeCtrl', {
+        scope = $rootScope.$new();
+        DateTimeCtrl = $controller('DateTimeCtrl', {
             $scope: scope,
             $interval: $interval,
             feDateService: feDateServiceMock

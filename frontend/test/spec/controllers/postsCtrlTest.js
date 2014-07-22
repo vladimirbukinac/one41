@@ -2,29 +2,31 @@
 
 describe('Controller: PostsCtrl', function () {
 
-  // load the controller's module
-  beforeEach(module('ngCookies'));
-  beforeEach(module('mPosts'));
+    // load the controller's module
+    beforeEach(module('ngCookies'));
+    beforeEach(module('feProperties'));
+    beforeEach(module('mPosts'));
 
-  var PostsCtrl, scope, log, interval;
+    var PostsCtrl, scope, log, interval;
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $log, $interval, UserService, PostService, feDateService) {
-    scope = $rootScope.$new();
-    log = $log;
-    interval = $interval;
-    PostsCtrl = $controller('PostsCtrl', {
-      $rootScope: $rootScope,
-          $scope: scope,
-          $log: log,
-          $interval: interval,
-          UserService: UserService,
-          PostService: PostService,
-          feDateService: feDateService
+    // Initialize the controller and a mock scope
+    beforeEach(inject(function ($controller, $rootScope, $log, $interval, UserService, PostService, feDateService, FrontendProperties) {
+        scope = $rootScope.$new();
+        log = $log;
+        interval = $interval;
+        PostsCtrl = $controller('PostsCtrl', {
+            $rootScope: $rootScope,
+            $scope: scope,
+            $log: log,
+            $interval: interval,
+            UserService: UserService,
+            PostService: PostService,
+            feDateService: feDateService,
+            FrontendProperties: FrontendProperties
+        });
+    }));
+
+    it('should attach name', function () {
+        expect(scope.showFeedback).toBe(false);
     });
-  }));
-
-  it('should attach name', function () {
-    expect(scope.showFeedback).toBe(false);
-  });
 });
