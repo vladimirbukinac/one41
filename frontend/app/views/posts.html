@@ -1,9 +1,9 @@
-<div ng-controller="PostsCtrl" >
+<div ng-controller="PostsCtrl">
     <table>
         <tr>
             <td style="vertical-align: top; width: 800px;">
                 <div>
-                    <table ng-init="getPosts()" class="table">
+                    <table ng-init="getPosts()" class="table table-hover">
                         <thead>
                         <tr>
                             <th width="75px">USER ID</th>
@@ -13,30 +13,41 @@
                         </tr>
                         </thead>
                         <tbody id="allRows">
-                        <tr ng-repeat="post in listOfPosts" class="table;posts" ng-class="rowHighlight" ng-mouseenter="rowHighlight='mouseenterpostrow'" ng-mouseleave="rowHighlight='mouseleavepostrow'">
+                        <tr ng-repeat="post in listOfPosts">
                             <td id="{{post.message.id}}">{{post.message.userId}}</td>
                             <td>{{post.message.text}}</td>
                             <td>
                                 {{post.message.creationDate}}
                                 <div ng-repeat="images in post.message.images">
-                                    <div id="{{images.image.id}}" style="float: right; width: 24px"><img src="images/image.png" ng-mouseover="showImage(images.image.image);"></div>
+                                    <div id="{{images.image.id}}" style="float: right; width: 24px"><img
+                                            src="images/image.png" ng-mouseover="showImage(images.image.image);"></div>
                                 </div>
                             </td>
-                            <td><button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)" ng-show="isUsersPost(post.message)">-</button></td>
+                            <td>
+                                <button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)"
+                                        ng-show="isUsersPost(post.message)">-
+                                </button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <!--<div ng-init="getPosts()">
                     <div ng-repeat="post in listOfPosts">
-                        <div class="posts" ng-class="rowHighlight" ng-mouseenter="rowHighlight='mouseenterpostrow'" ng-mouseleave="rowHighlight='mouseleavepostrow'">
+                        <div class="posts" ng-class="rowHighlight" ng-mouseenter="rowHighlight='mouseenterpostrow'"
+                             ng-mouseleave="rowHighlight='mouseleavepostrow'">
                             <div id="{{post.message.id}}" style="float: left; width: 30px">{{post.message.userId}}</div>
                             <div style="float: left; width: 200px">{{post.message.text}}</div>
                             <div style="float: left; width: 150px">{{post.message.creationDate}}</div>
-                            <div style="float: left; width: 25px"><button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)" ng-show="isUsersPost(post.message)">-</button></div>
+                            <div style="float: left; width: 25px">
+                                <button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)"
+                                        ng-show="isUsersPost(post.message)">-
+                                </button>
+                            </div>
                             <div>
                                 <div ng-repeat="images in post.message.images">
-                                    <div id="{{post.message.id}}.{{images.image.id}}" style="float: right; width: 24px"><img src="images/image.png" ng-mouseover="showImage(images.image.image);"></div>
+                                    <div id="{{post.message.id}}.{{images.image.id}}" style="float: right; width: 24px">
+                                        <img src="images/image.png" ng-mouseover="showImage(images.image.image);"></div>
                                 </div>
                             </div>
                         </div>
@@ -50,5 +61,7 @@
             </td>
         </tr>
     </table>
-    <alert style="color: #FF0000; font-weight: bold; font-style: italic" ng-show=showFeedback close="closeAlert()" type=alertType>{{status}}</alert>
+    <alert style="color: #FF0000; font-weight: bold; font-style: italic" ng-show=showFeedback close="closeAlert()"
+           type=alertType>{{status}}
+    </alert>
 </div>
