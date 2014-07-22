@@ -32,9 +32,9 @@ body {
 }
 
 /* Customize container */
-@media (min-width: 768px) {
+@media (min-width: 1366px) {
   .container {
-    max-width: 730px;
+    max-width: 1360px;
   }
 }
 .container-narrow > hr {
@@ -118,4 +118,9 @@ body {
 
 .mouseleavepostrow {
     background: #ffffff;
+}
+
+.someImage {
+    width: 400px;
+    height: 300px;
 }

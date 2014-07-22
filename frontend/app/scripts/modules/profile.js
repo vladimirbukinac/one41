@@ -1,16 +1,13 @@
-/**
- * Created by vbukinac on 15.07.2014.
- */
 'use strict';
 
 angular.module('mProfile', ['mServices'])
-.config(function(){
+    .config(function () {
 
-})
+    })
 
-.controller('ProfileCtrl', ['$scope', 'UserService', function($scope, UserService){
+    .controller('ProfileCtrl', ['$scope', 'UserService', function ($scope, UserService) {
 
-    $scope.isUserLogged = function() {
-        return UserService.isUserLogged();
-    };
-}]);
+        $scope.isUserLogged = function () {
+            return UserService.isUserLogged();
+        };
+    }]);
