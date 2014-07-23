@@ -15,15 +15,21 @@ angular.module('mServices')
 
             $http.post('/rest/message/latest', data)
                 .success(function (data, status) {
-                    self.listOfPosts = data.messages;
+                    if (angular.equals(data.error, undefined)) {
 
-                    for (var i = 0; i < self.listOfPosts.length; i++) {
-                        self.listOfPosts[i].message.creationDate = feDateService.getCurrentDateTimeInFormatDMYHMS(new Date(self.listOfPosts[i].message.creationDate));
+                        self.listOfPosts = data.messages;
 
-                        self.populateImages(UserService.getUser().getUserProfile().token, self.listOfPosts[i].message);
+                        for (var i = 0; i < self.listOfPosts.length; i++) {
+                            self.listOfPosts[i].message.creationDate = feDateService.getCurrentDateTimeInFormatDMYHMS(new Date(self.listOfPosts[i].message.creationDate));
+
+                            self.populateImages(UserService.getUser().getUserProfile().token, self.listOfPosts[i].message);
+                        }
+
+                        deferred.resolve(data, status);
+
+                    } else {
+                        deferred.resolve(data, status);
                     }
-
-                    deferred.resolve(status);
                 })
                 .error(function (status) {
                     deferred.reject(status);
