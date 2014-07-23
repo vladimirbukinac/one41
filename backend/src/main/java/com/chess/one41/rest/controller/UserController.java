@@ -1,8 +1,10 @@
-package com.chess.one41.rest;
+package com.chess.one41.rest.controller;
 
 import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.UserService;
 import com.chess.one41.backend.service.exception.IllegalOperationException;
+import com.chess.one41.rest.SessionUtil;
+import com.chess.one41.rest.Token;
 import com.chess.one41.rest.model.*;
 import com.chess.one41.rest.model.Error;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -53,6 +55,16 @@ public class UserController {
         BeanUtils.copyProperties(userDto, user);
 
         userService.createOrUpdateUser(user);
+
+        return null;
+    }
+
+    @RequestMapping(value="/delete", method= {RequestMethod.GET, RequestMethod.POST})
+    public Response deleteUser(@RequestBody UserDto userDto) throws IllegalOperationException {
+        User user = new User();
+        BeanUtils.copyProperties(userDto, user);
+
+        userService.deleteEntity(user);
 
         return null;
     }
