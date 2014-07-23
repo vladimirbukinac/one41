@@ -29,21 +29,21 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
         }, 100);
 
         $scope.login = function () {
-            $scope.user = {};
+            /*$scope.user = {};
             $scope.user.username = '';
-            $scope.user.password = '';
+            $scope.user.password = '';*/
 
             var loginModalInstance = $modal.open({
                 templateUrl: 'views/login.html',
                 controller: 'LoginModalInstanceCtrl',
                 keyboard: true,
                 backdrop: 'static',
-                windowClass: 'app-modal-window',
+                windowClass: 'app-modal-window'/*,
                 resolve: {
                     user: function () {
                         return $scope.user;
                     }
-                }
+                }*/
             });
 
             loginModalInstance.result.then(function (response) {
