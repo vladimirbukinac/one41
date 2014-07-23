@@ -13,7 +13,7 @@
                         </tr>
                         </thead>
                         <tbody id="allRows">
-                        <tr ng-repeat="post in listOfPosts">
+                        <tr ng-repeat="post in posts.listOfPosts">
                             <td id="{{post.message.id}}">{{post.message.userId}}</td>
                             <td>{{post.message.text}}</td>
                             <td>
@@ -24,7 +24,7 @@
                                 </div>
                             </td>
                             <td>
-                                <button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)"
+                                <button class="btn-success" ng-click="deletePost(posts.listOfPosts, post.message, $index)"
                                         ng-show="isUsersPost(post.message)">-
                                 </button>
                             </td>
@@ -33,14 +33,14 @@
                     </table>
                 </div>
                 <!--<div ng-init="getPosts()">
-                    <div ng-repeat="post in listOfPosts">
+                    <div ng-repeat="post in posts.listOfPosts">
                         <div class="posts" ng-class="rowHighlight" ng-mouseenter="rowHighlight='mouseenterpostrow'"
                              ng-mouseleave="rowHighlight='mouseleavepostrow'">
-                            <div id="{{post.message.id}}" style="float: left; width: 30px">{{post.message.userId}}</div>
-                            <div style="float: left; width: 200px">{{post.message.text}}</div>
+                            <div id="{{post.message.id}}" style="float: left; width: 75px">{{post.message.userId}}</div>
+                            <div style="float: left; width: 400px">{{post.message.text}}</div>
                             <div style="float: left; width: 150px">{{post.message.creationDate}}</div>
                             <div style="float: left; width: 25px">
-                                <button class="btn-success" ng-click="deletePost(listOfPosts, post.message, $index)"
+                                <button class="btn-success" ng-click="deletePost(posts.listOfPosts, post.message, $index)"
                                         ng-show="isUsersPost(post.message)">-
                                 </button>
                             </div>

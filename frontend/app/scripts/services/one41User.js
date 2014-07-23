@@ -2,11 +2,12 @@
 
 angular.module('mServices')
     .factory('One41User', ['$rootScope', '$cookieStore', '$q', '$http', function ($rootScope, $cookieStore, $q, $http) {
-        var user = function () {
+
+        var One41User = function () {
             this.profile = $cookieStore.get('one41CookieKey');
         };
 
-        user.prototype.login = function (username, password) {
+        One41User.prototype.login = function (username, password) {
             var deferred = $q.defer();
             var data = {'authentication': {'username': username, 'password': password}};
 
@@ -26,17 +27,17 @@ angular.module('mServices')
             return deferred.promise;
         };
 
-        user.prototype.logout = function () {
+        One41User.prototype.logout = function () {
             this.profile = undefined;
             $cookieStore.remove('one41CookieKey');
             this.broadcastUserStatusChanged();
         };
 
-        user.prototype.getUserProfile = function () {
+        One41User.prototype.getUserProfile = function () {
             return this.profile;
         };
 
-        user.prototype.isUserLogged = function () {
+        One41User.prototype.isUserLogged = function () {
             if (angular.equals(this.profile, undefined)) {
                 return false;
             } else {
@@ -44,9 +45,9 @@ angular.module('mServices')
             }
         };
 
-        user.prototype.broadcastUserStatusChanged = function () {
+        One41User.prototype.broadcastUserStatusChanged = function () {
             $rootScope.$broadcast('UserStatusChanged');
         };
 
-        return user;
+        return One41User;
     }]);

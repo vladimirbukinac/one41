@@ -4,11 +4,13 @@ angular.module('mPosts', ['mServices'])
     .config(function () {
     })
 
-    .controller('PostsCtrl', ['$rootScope', '$scope', '$log', '$interval', 'UserService', 'PostService', 'feDateService', 'FrontendProperties',
-        function ($rootScope, $scope, $log, $interval, UserService, PostService, feDateService, FrontendProperties) {
-            $scope.showFeedback = false;
+    .controller('PostsCtrl', ['$rootScope', '$scope', '$log', '$interval', 'UserService', 'Posts', 'feDateService', 'FrontendProperties',
+        function ($rootScope, $scope, $log, $interval, UserService, Posts, feDateService, FrontendProperties) {
+            $scope.posts = new Posts();
 
             var postsRefresh;
+
+            $scope.showFeedback = false;
 
             $scope.showImage = function (image) {
                 $scope.someImage = 'data:image/*;base64,' + image;
@@ -27,18 +29,12 @@ angular.module('mPosts', ['mServices'])
             $scope.getPosts = function () {
                 // this should be without user token - now token is necessary
                 if (UserService.getUser().isUserLogged()) {
-                    PostService.getPosts(UserService.getUser().getUserProfile().token).then(function (result) {
+                    $scope.posts.getPosts(UserService.getUser().getUserProfile().token).then(function (result) {
                         if (angular.equals(result.error, undefined)) {
-                            for (var i = 0; i < result.messages.length; i++) {
-                                result.messages[i].message.creationDate = feDateService.getCurrentDateTimeInFormatDMYHMS(new Date(result.messages[i].message.creationDate));
 
-                                $scope.getMessageWithImages(result.messages[i].message);
-                            }
-
-                            $scope.listOfPosts = result.messages;
                             $scope.showFeedback = false;
                         } else {
-                            $scope.listOfPosts = null;
+                            $scope.posts.listOfPosts = null;
 
                             switch (result.error.errortype) {
                                 case 'TOKEN_EXPIRED':
@@ -55,20 +51,12 @@ angular.module('mPosts', ['mServices'])
                         showAlert('error', e);
                     });
                 } else {
-                    $scope.listOfPosts = null;
+                    $scope.posts.listOfPosts = null;
                 }
             };
 
-            $scope.getMessageWithImages = function (post) {
-                PostService.getMessageWithImages(UserService.getUser().getUserProfile().token, post.id).then(function (result) {
-                    post.images = result.message.images;
-                }, function (e) {
-                    showAlert('error', e);
-                });
-            };
-
             $scope.deletePost = function (list, post, index) {
-                PostService.deletePost(UserService.getUser().getUserProfile().token, post.id).then(function () {
+                $scope.posts.deletePost(UserService.getUser().getUserProfile().token, post.id).then(function () {
                     list.splice(index, 1);
                 }, function (e) {
                     showAlert('error', e);
