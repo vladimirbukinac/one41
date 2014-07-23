@@ -7,6 +7,6 @@ angular.module('mNewPost', ['mServices'])
     .controller('NewPostCtrl', ['$scope', 'UserService', function ($scope, UserService) {
 
         $scope.isUserLogged = function () {
-            return UserService.isUserLogged();
+            return UserService.getUser().isUserLogged();
         };
     }]);

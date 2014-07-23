@@ -13,9 +13,9 @@ angular.module('mLogin', [])
                 if (!(angular.equals($scope.user.username, null) || angular.equals($scope.user.username, '') || angular.equals($scope.user.username, undefined) ||
                     angular.equals($scope.user.password, null) || angular.equals($scope.user.password, '') || angular.equals($scope.user.password, undefined))) {
 
-                    UserService.authenticate($scope.user).then(function (result) {
-                        if (!(angular.equals(result, null) || angular.equals(result, '') || angular.equals(result, undefined))) {
-                            $modalInstance.close(result);
+                    UserService.getUser().login($scope.user.username, $scope.user.password).then(function () {
+                        if (!angular.equals(UserService.getUser().getUserProfile(), undefined)) {
+                            $modalInstance.close();
                         } else {
                             showAlert('error', 'Bad credentials!');
                         }

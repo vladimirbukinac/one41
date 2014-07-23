@@ -8,6 +8,6 @@ angular.module('mProfile', ['mServices'])
     .controller('ProfileCtrl', ['$scope', 'UserService', function ($scope, UserService) {
 
         $scope.isUserLogged = function () {
-            return UserService.isUserLogged();
+            return UserService.getUser().isUserLogged();
         };
     }]);

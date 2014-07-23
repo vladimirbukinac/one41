@@ -26,8 +26,8 @@ angular.module('mPosts', ['mServices'])
 
             $scope.getPosts = function () {
                 // this should be without user token - now token is necessary
-                if (UserService.isUserLogged()) {
-                    PostService.getPosts(UserService.getUser().token).then(function (result) {
+                if (UserService.getUser().isUserLogged()) {
+                    PostService.getPosts(UserService.getUser().getUserProfile().token).then(function (result) {
                         if (angular.equals(result.error, undefined)) {
                             for (var i = 0; i < result.messages.length; i++) {
                                 result.messages[i].message.creationDate = feDateService.getCurrentDateTimeInFormatDMYHMS(new Date(result.messages[i].message.creationDate));
@@ -60,7 +60,7 @@ angular.module('mPosts', ['mServices'])
             };
 
             $scope.getMessageWithImages = function (post) {
-                PostService.getMessageWithImages(UserService.getUser().token, post.id).then(function (result) {
+                PostService.getMessageWithImages(UserService.getUser().getUserProfile().token, post.id).then(function (result) {
                     post.images = result.message.images;
                 }, function (e) {
                     showAlert('error', e);
@@ -68,7 +68,7 @@ angular.module('mPosts', ['mServices'])
             };
 
             $scope.deletePost = function (list, post, index) {
-                PostService.deletePost(UserService.getUser().token, post.id).then(function () {
+                PostService.deletePost(UserService.getUser().getUserProfile().token, post.id).then(function () {
                     list.splice(index, 1);
                 }, function (e) {
                     showAlert('error', e);
@@ -84,11 +84,11 @@ angular.module('mPosts', ['mServices'])
             };
 
             $scope.isUserLogged = function () {
-                return UserService.isUserLogged();
+                return UserService.getUser().isUserLogged();
             };
 
             $scope.isUsersPost = function (post) {
-                if (UserService.getUser().id === post.userId) {
+                if (UserService.getUser().getUserProfile().id === post.userId) {
                     return true;
                 } else {
                     return false;
