@@ -4,22 +4,27 @@ angular.module('mLogin', [])
     .config(function () {
     })
 
-    .controller('LoginModalInstanceCtrl', ['$rootScope', '$scope', '$modalInstance', '$log', 'user', 'LoginService',
-        function ($rootScope, $scope, $modalInstance, $log, user, LoginService) {
+    .controller('LoginModalInstanceCtrl', ['$rootScope', '$scope', '$modalInstance', '$log', 'UserService',
+        function ($rootScope, $scope, $modalInstance, $log, UserService) {
             $scope.showFeedback = false;
-            $scope.user = user;
+            $scope.user = {'username': null, 'password': null};
 
             $scope.login = function () {
                 if (!(angular.equals($scope.user.username, null) || angular.equals($scope.user.username, '') || angular.equals($scope.user.username, undefined) ||
                     angular.equals($scope.user.password, null) || angular.equals($scope.user.password, '') || angular.equals($scope.user.password, undefined))) {
 
-                    LoginService.checkUser(user).then(function (result) {
-                        if (!(angular.equals(result, null) || angular.equals(result, '') || angular.equals(result, undefined))) {
-                            $modalInstance.close(result);
+                    UserService.getUser().login($scope.user.username, $scope.user.password).then(function (data) {
+                        if (angular.equals(data.error, undefined)) {
+                            $modalInstance.close();
                         } else {
-                            showAlert('error', 'Bad credentials!');
+                            switch (data.error.errortype) {
+                                case 'AUTHENTICATE_INVALID_CREDENTIALS':
+                                    showAlert('error', 'Invalid credentials!');
+                                    break;
+                                default:
+                                    showAlert('error', 'Unknown error!');
+                            }
                         }
-
                     }, function (status) {
                         showAlert('error', status);
                     });

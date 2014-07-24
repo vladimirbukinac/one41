@@ -10,7 +10,7 @@ describe('Controller: PostsCtrl', function () {
     var PostsCtrl, scope, log, interval;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, $log, $interval, UserService, PostService, feDateService, FrontendProperties) {
+    beforeEach(inject(function ($controller, $rootScope, $log, $interval, UserService, Posts, feDateService, FrontendProperties) {
         scope = $rootScope.$new();
         log = $log;
         interval = $interval;
@@ -20,7 +20,7 @@ describe('Controller: PostsCtrl', function () {
             $log: log,
             $interval: interval,
             UserService: UserService,
-            PostService: PostService,
+            Posts: Posts,
             feDateService: feDateService,
             FrontendProperties: FrontendProperties
         });

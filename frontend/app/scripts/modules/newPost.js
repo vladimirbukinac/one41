@@ -33,7 +33,7 @@ angular.module('mNewPost', ['mServices'])
         };
 
         $scope.isUserLogged = function () {
-            return UserService.isUserLogged();
+            return UserService.getUser().isUserLogged();
         };
 
     }])

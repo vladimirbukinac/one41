@@ -24,48 +24,36 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
     .controller('LoginCtrl', ['$scope', '$modal', '$log', '$cookieStore', '$timeout', 'UserService', function ($scope, $modal, $log, $cookieStore, $timeout, UserService) {
         var initUser;
 
-        initUser = $timeout(function () {
-            $scope.user = UserService.getUser();
+        // this is not nice solution
+        initUser = $timeout(function(){
+            $scope.user = UserService.getUser().getUserProfile();
         }, 100);
 
         $scope.login = function () {
-            $scope.user = {};
-            $scope.user.username = '';
-            $scope.user.password = '';
-
             var loginModalInstance = $modal.open({
                 templateUrl: 'views/login.html',
                 controller: 'LoginModalInstanceCtrl',
                 keyboard: true,
                 backdrop: 'static',
-                windowClass: 'app-modal-window',
-                resolve: {
-                    user: function () {
-                        return $scope.user;
-                    }
-                }
+                windowClass: 'app-modal-window'
             });
 
-            loginModalInstance.result.then(function (response) {
-                $scope.user = response.user;
-                UserService.setUser($scope.user);
-                UserService.broadcastUserStatusChanged();
+            loginModalInstance.result.then(function () {
+                $scope.user = UserService.getUser().getUserProfile();
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
         };
 
         $scope.logout = function () {
-            $scope.user = {};
-            UserService.setUser($scope.user);
-            UserService.broadcastUserStatusChanged();
+            UserService.getUser().logout();
         };
 
         $scope.$on('UserStatusChanged', function () {
-            $scope.user = UserService.getUser();
+            $scope.user = UserService.getUser().getUserProfile();
         });
 
         $scope.isUserLogged = function () {
-            return UserService.isUserLogged();
+            return UserService.getUser().isUserLogged();
         };
     }]);

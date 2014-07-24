@@ -43,9 +43,9 @@ module.exports = function (config) {
             'app/scripts/modules/posts.js',
             'app/scripts/modules/newPost.js',
             'app/scripts/modules/profile.js',
-            'app/scripts/services/services.js',
+            'app/scripts/services/userService.js',
+            'app/scripts/services/one41User.js',
             'app/scripts/services/feDateService.js',
-            'app/scripts/services/loginService.js',
             'app/scripts/services/postService.js',
 
             'test/spec/**/*.js'

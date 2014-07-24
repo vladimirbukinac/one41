@@ -1,4 +1,4 @@
-package com.chess.one41.rest;
+package com.chess.one41.rest.controller;
 
 import com.chess.one41.backend.entity.Image;
 import com.chess.one41.backend.entity.Message;
@@ -6,6 +6,8 @@ import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.MessageService;
 import com.chess.one41.backend.service.exception.EntityNotFoundException;
 import com.chess.one41.backend.service.exception.ServiceException;
+import com.chess.one41.rest.SessionUtil;
+import com.chess.one41.rest.Token;
 import com.chess.one41.rest.model.ImageDto;
 import com.chess.one41.rest.model.MessageDto;
 import com.chess.one41.rest.model.Response;
