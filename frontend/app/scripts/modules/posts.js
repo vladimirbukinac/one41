@@ -79,6 +79,11 @@ angular.module('mPosts', ['mServices'])
                 $scope.getPosts();
             });
 
+            $scope.$on('MessagesChanged', function () {
+                $scope.getPosts();
+            });
+
+
             $scope.closeAlert = function () {
                 $scope.showFeedback = false;
             };
