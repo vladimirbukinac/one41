@@ -15,10 +15,13 @@ angular.module('mServices')
 
             $http.post('/rest/user/authenticate', data)
                 .success(function (data, status) {
-                    self.profile = data.user;
-                    $cookieStore.put('one41CookieKey', data.user);
-                    self.broadcastUserStatusChanged();
-                    deferred.resolve(status);
+                    if (angular.equals(data.error, undefined)) {
+                        self.profile = data.user;
+                        $cookieStore.put('one41CookieKey', data.user);
+                        self.broadcastUserStatusChanged();
+                    }
+
+                    deferred.resolve(data, status);
                 })
                 .error(function (status) {
                     deferred.reject(status);
@@ -38,11 +41,7 @@ angular.module('mServices')
         };
 
         One41User.prototype.isUserLogged = function () {
-            if (angular.equals(this.profile, undefined)) {
-                return false;
-            } else {
-                return true;
-            }
+            return (!angular.equals(this.profile, undefined));
         };
 
         One41User.prototype.broadcastUserStatusChanged = function () {

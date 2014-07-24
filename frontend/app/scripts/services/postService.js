@@ -24,12 +24,9 @@ angular.module('mServices')
 
                             self.populateImages(UserService.getUser().getUserProfile().token, self.listOfPosts[i].message);
                         }
-
-                        deferred.resolve(data, status);
-
-                    } else {
-                        deferred.resolve(data, status);
                     }
+
+                    deferred.resolve(data, status);
                 })
                 .error(function (status) {
                     deferred.reject(status);

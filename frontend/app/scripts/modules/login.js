@@ -13,13 +13,18 @@ angular.module('mLogin', [])
                 if (!(angular.equals($scope.user.username, null) || angular.equals($scope.user.username, '') || angular.equals($scope.user.username, undefined) ||
                     angular.equals($scope.user.password, null) || angular.equals($scope.user.password, '') || angular.equals($scope.user.password, undefined))) {
 
-                    UserService.getUser().login($scope.user.username, $scope.user.password).then(function () {
-                        if (!angular.equals(UserService.getUser().getUserProfile(), undefined)) {
+                    UserService.getUser().login($scope.user.username, $scope.user.password).then(function (data) {
+                        if (angular.equals(data.error, undefined)) {
                             $modalInstance.close();
                         } else {
-                            showAlert('error', 'Bad credentials!');
+                            switch (data.error.errortype) {
+                                case 'AUTHENTICATE_INVALID_CREDENTIALS':
+                                    showAlert('error', 'Invalid credentials!');
+                                    break;
+                                default:
+                                    showAlert('error', 'Unknown error!');
+                            }
                         }
-
                     }, function (status) {
                         showAlert('error', status);
                     });

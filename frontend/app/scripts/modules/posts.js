@@ -34,7 +34,7 @@ angular.module('mPosts', ['mServices'])
 
                             $scope.showFeedback = false;
                         } else {
-                            $scope.posts.listOfPosts = null;
+                            $scope.posts.listOfPosts = [];
 
                             switch (result.error.errortype) {
                                 case 'TOKEN_EXPIRED':
@@ -51,7 +51,7 @@ angular.module('mPosts', ['mServices'])
                         showAlert('error', e);
                     });
                 } else {
-                    $scope.posts.listOfPosts = null;
+                    $scope.posts.listOfPosts = [];
                 }
             };
 
@@ -76,10 +76,6 @@ angular.module('mPosts', ['mServices'])
             };
 
             $scope.isUsersPost = function (post) {
-                if (UserService.getUser().getUserProfile().id === post.userId) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return (angular.equals(UserService.getUser().getUserProfile().id, post.userId));
             };
         }]);
