@@ -1,5 +1,8 @@
 package com.chess.one41.cucumber;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,15 +13,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class NetworkUtil {
 
     public static final String baseUrl = "http://localhost:8080/rest/";
 
-    public static String sendRequest(String targetURL, JSONObject jsonObject)
+    public static String sendRequest(String targetURL, String parameters)
     {
-        String parameters = jsonObject.toString();
         HttpURLConnection connection = null;
         try {
             //Create connection
@@ -66,17 +69,6 @@ public class NetworkUtil {
         }
     }
 
-    public static JSONObject createJSONObject(String name, String... nameValuePairs) {
-        JSONObject values = new JSONObject();
-        for (int i = 0; i < nameValuePairs.length-1; i = i + 2) {
-            values.put(nameValuePairs[i], nameValuePairs[i+1]);
-        }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put(name, values);
-
-        return jsonObject;
-    }
-
     public static void assertResponseSuccessful(String response) {
         assertTrue(response.length() == 0);
     }
@@ -92,5 +84,15 @@ public class NetworkUtil {
         } catch (JSONException e) {}
 
         assertNotNull(error);
+    }
+
+    public static String generateJSONString(Object object) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        try {
+            return mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
     }
 }
