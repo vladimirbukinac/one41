@@ -53,11 +53,13 @@ public class MessageController {
         BeanUtils.copyProperties(messageDto, message);
 
         List<Image> images = new ArrayList<Image>();
-        for (ImageDto imageDto : messageDto.getImages()) {
-            Image image = new Image();
-            BeanUtils.copyProperties(imageDto, image);
-            image.setMessage(message);
-            images.add(image);
+        if (messageDto.getImages() != null) {
+            for (ImageDto imageDto : messageDto.getImages()) {
+                Image image = new Image();
+                BeanUtils.copyProperties(imageDto, image);
+                image.setMessage(message);
+                images.add(image);
+            }
         }
         message.setImages(images);
 
