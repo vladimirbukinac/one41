@@ -71,7 +71,7 @@ angular.module('mNewPost', ['mServices'])
             var message = {};
             message.text = this.text;
             message.images = this.images;
-            message.token = UserService.getUser().token;
+            message.token = UserService.getUser().getUserProfile().token;
             var data = {'message': message};
 
             $http.post('/rest/message/create', data)
@@ -90,7 +90,7 @@ angular.module('mNewPost', ['mServices'])
             var message = {};
             message.text = this.text;
             message.images = this.images;
-            message.token = UserService.getUser().token;
+            message.token = UserService.getUser().getUserProfile().token;
             var data = this.images[0].image;
 
             var config = {headers: {
