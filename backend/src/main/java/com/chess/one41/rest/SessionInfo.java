@@ -15,15 +15,19 @@ public class SessionInfo {
         this.timeout = timeout;
     }
 
-    public boolean isExpired() {
+    public boolean isExpired(boolean updateOnAccess) {
         Date now = new Date();
         boolean expired = (now.getTime() - lastAccess.getTime()) / 1000 > timeout;
 
-        if (!expired) {
+        if (updateOnAccess && !expired) {
             lastAccess = now;
         }
 
         return expired;
+    }
+
+    public boolean isExpired() {
+        return isExpired(true);
     }
 
     public User getUser() {
