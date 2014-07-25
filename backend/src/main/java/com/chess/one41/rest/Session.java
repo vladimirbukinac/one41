@@ -14,7 +14,7 @@ public class Session {
 
     private Map<String, SessionInfo> sessions = new ConcurrentHashMap<String, SessionInfo>();
 
-    private int timeout = 15 * 60; // in minutes
+    private int timeout = 15 * 60; // in seconds
 
     public boolean isUserLoggedIn(String token) {
         if (token == null) {
