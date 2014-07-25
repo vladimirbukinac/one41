@@ -2,6 +2,8 @@
 
 describe('Controller: PostsCtrl', function () {
 
+    var PostsCtrl, scope, log, interval, listOfPosts, q, rootScope, deferred, promise, data, status;
+
     // load the controller's module
     beforeEach(module('ngCookies'));
     beforeEach(module('feProperties'));
@@ -89,20 +91,56 @@ describe('Controller: PostsCtrl', function () {
         });
     });
 
-    var PostsCtrl, scope, log, interval, listOfPosts;
+    beforeEach(function () {
+        var PostsFactoryMock = jasmine.createSpyObj('PostsFactoryMock', ['create']);
+
+        PostsFactoryMock.create = function () {
+            return {
+                listOfPosts: [],
+                getPosts: function (token) {
+                    token = null;
+
+                    scope.posts.listOfPosts = data.messages;
+
+                    return promise;
+                },
+                deletePost: function (token, id) {
+                    token = null;
+                    id = null;
+
+                    return promise;
+                },
+                populateImages: function (token, post) {
+                    token = null;
+                    post = null;
+                }
+            };
+        };
+
+        module(function ($provide) {
+            $provide.value('PostsFactoryMock', PostsFactoryMock);
+        });
+    });
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, $log, $interval, UserServiceMock, Posts, feDateServiceMock, FrontendProperties, listOfPostsMock) {
-        scope = $rootScope.$new();
+    beforeEach(inject(function ($rootScope, $q) {
+        q = $q;
+        rootScope = $rootScope;
+        deferred = q.defer();
+        promise = deferred.promise;
+    }));
+
+    beforeEach(inject(function ($controller, $log, $interval, UserServiceMock, PostsFactoryMock, feDateServiceMock, FrontendProperties, listOfPostsMock) {
+        scope = rootScope.$new();
         log = $log;
         interval = $interval;
         PostsCtrl = $controller('PostsCtrl', {
-            $rootScope: $rootScope,
+            $rootScope: rootScope,
             $scope: scope,
             $log: log,
             $interval: interval,
             UserService: UserServiceMock,
-            Posts: Posts,
+            PostsFactory: PostsFactoryMock,
             feDateService: feDateServiceMock,
             FrontendProperties: FrontendProperties
         });
@@ -117,34 +155,64 @@ describe('Controller: PostsCtrl', function () {
         expect(scope.isUserLogged()).toBe(true);
     });
 
+    it('isUsersPost test I:', function () {
+        scope.posts.listOfPosts = listOfPosts;
+        expect(scope.isUsersPost(scope.posts.listOfPosts[0].message)).toBe(true);
+    });
+
+    it('isUsersPost test II:', function () {
+        scope.posts.listOfPosts = listOfPosts;
+        expect(scope.isUsersPost(scope.posts.listOfPosts[1].message)).toBe(false);
+    });
+
     it('deletePost success:', function () {
         scope.posts.listOfPosts = listOfPosts;
         var list = scope.posts.listOfPosts;
 
-        spyOn(scope.posts, 'deletePost').andCallFake(function (token, id) {
-            token = null;
-            id = null;
-            scope.posts.listOfPosts.splice(0, 1);
-            return {
-                then: function () {
-                }
-            };
-        });
-        scope.deletePost(list, scope.posts.listOfPosts[0].message, 0);
+        scope.deletePost(scope.posts.listOfPosts, list, 0);
+        deferred.resolve();
+        rootScope.$apply();
         expect(scope.posts.listOfPosts.length).toBe(1);
         expect(scope.posts.listOfPosts[0].message.id).toBe(2);
     });
 
-    it('getPosts success:', function () {
-        spyOn(scope.posts, 'getPosts').andCallFake(function () {
-            scope.posts.listOfPosts = listOfPosts;
-            return {
-                then: function () {
-                }
-            };
-        });
-        scope.getPosts();
+    it('deletePost error:', function () {
+        scope.posts.listOfPosts = listOfPosts;
+        var list = scope.posts.listOfPosts;
+        status = 500;
+
+        scope.deletePost(scope.posts.listOfPosts, list, 0);
+        deferred.reject(status);
+        rootScope.$apply();
         expect(scope.posts.listOfPosts.length).toBe(2);
     });
 
+    it('getPosts success:', function () {
+        status = 200;
+        data = {messages: listOfPosts};
+
+        scope.getPosts();
+        deferred.resolve(data, status);
+        rootScope.$apply();
+        expect(scope.posts.listOfPosts.length).toBe(2);
+    });
+
+    it('getPosts success with error type TOKEN_EXPIRED:', function () {
+        status = 200;
+        data = {error: {errortype: 'TOKEN_EXPIRED'}};
+
+        scope.getPosts();
+        deferred.resolve(data, status);
+        rootScope.$apply();
+        expect(scope.posts.listOfPosts.length).toBe(0);
+    });
+
+    it('getPosts success with 500 Internal Server Error:', function () {
+        status = 500;
+
+        scope.getPosts();
+        deferred.reject(status);
+        rootScope.$apply();
+        expect(scope.posts.listOfPosts.length).toBe(0);
+    });
 });
