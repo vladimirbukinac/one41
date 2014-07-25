@@ -2,7 +2,7 @@
 
 describe('Controller: PostsCtrl', function () {
 
-    var PostsCtrl, scope, log, interval, listOfPosts;
+    var PostsCtrl, scope, log, interval, listOfPosts, q, rootScope, deferred, promise, data, status;
 
     // load the controller's module
     beforeEach(module('ngCookies'));
@@ -100,19 +100,15 @@ describe('Controller: PostsCtrl', function () {
                 getPosts: function (token) {
                     token = null;
 
-                    return {
-                        then: function () {
-                        }
-                    };
+                    scope.posts.listOfPosts = data.messages;
+
+                    return promise;
                 },
                 deletePost: function (token, id) {
                     token = null;
                     id = null;
 
-                    return {
-                        then: function () {
-                        }
-                    };
+                    return promise;
                 },
                 populateImages: function (token, post) {
                     token = null;
@@ -127,12 +123,19 @@ describe('Controller: PostsCtrl', function () {
     });
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, $log, $interval, UserServiceMock, PostsFactoryMock, feDateServiceMock, FrontendProperties, listOfPostsMock) {
-        scope = $rootScope.$new();
+    beforeEach(inject(function ($rootScope, $q) {
+        q = $q;
+        rootScope = $rootScope;
+        deferred = q.defer();
+        promise = deferred.promise;
+    }));
+
+    beforeEach(inject(function ($controller, $log, $interval, UserServiceMock, PostsFactoryMock, feDateServiceMock, FrontendProperties, listOfPostsMock) {
+        scope = rootScope.$new();
         log = $log;
         interval = $interval;
         PostsCtrl = $controller('PostsCtrl', {
-            $rootScope: $rootScope,
+            $rootScope: rootScope,
             $scope: scope,
             $log: log,
             $interval: interval,
@@ -152,43 +155,56 @@ describe('Controller: PostsCtrl', function () {
         expect(scope.isUserLogged()).toBe(true);
     });
 
-    it('deletePost success:', inject(function ($q, $rootScope) {
-        var deferred = $q.defer();
-        var promise = deferred.promise;
+    it('deletePost success:', function () {
         scope.posts.listOfPosts = listOfPosts;
         var list = scope.posts.listOfPosts;
 
-        spyOn(scope.posts, 'deletePost').andCallFake(function (token, id) {
-            token = null;
-            id = null;
-
-            return promise;
-        });
-
         scope.deletePost(scope.posts.listOfPosts, list, 0);
         deferred.resolve();
-        $rootScope.$apply();
+        rootScope.$apply();
         expect(scope.posts.listOfPosts.length).toBe(1);
         expect(scope.posts.listOfPosts[0].message.id).toBe(2);
+    });
 
-    }));
+    it('deletePost error:', function () {
+        scope.posts.listOfPosts = listOfPosts;
+        var list = scope.posts.listOfPosts;
+        status = 500;
 
-    it('getPosts success:', inject(function ($q, $rootScope) {
-        var deferred = $q.defer();
-        var promise = deferred.promise;
-        var status = 200;
-        var data = {messages: listOfPosts};
+        scope.deletePost(scope.posts.listOfPosts, list, 0);
+        deferred.reject();
+        rootScope.$apply();
+        expect(scope.posts.listOfPosts.length).toBe(2);
+    });
 
-        spyOn(scope.posts, 'getPosts').andCallFake(function () {
-            scope.posts.listOfPosts = data.messages;
-
-            return promise;
-        });
+    it('getPosts success:', function () {
+/*        var deferred = q.defer();
+        var promise = deferred.promise;*/
+        status = 200;
+        data = {messages: listOfPosts};
 
         scope.getPosts();
         deferred.resolve(data, status);
-        $rootScope.$apply();
+        rootScope.$apply();
         expect(scope.posts.listOfPosts.length).toBe(2);
-    }));
+    });
 
+    it('getPosts success with error type TOKEN_EXPIRED:', function () {
+        status = 200;
+        data = {error: {errortype: 'TOKEN_EXPIRED'}};
+
+        scope.getPosts();
+        deferred.resolve(data, status);
+        rootScope.$apply();
+        expect(scope.posts.listOfPosts.length).toBe(0);
+    });
+
+    it('getPosts success with 500 Internal Server Error:', function () {
+        status = 500;
+
+        scope.getPosts();
+        deferred.reject(status);
+        rootScope.$apply();
+        expect(scope.posts.listOfPosts.length).toBe(0);
+    });
 });
