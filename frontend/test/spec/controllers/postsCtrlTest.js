@@ -155,6 +155,16 @@ describe('Controller: PostsCtrl', function () {
         expect(scope.isUserLogged()).toBe(true);
     });
 
+    it('isUsersPost test I:', function () {
+        scope.posts.listOfPosts = listOfPosts;
+        expect(scope.isUsersPost(scope.posts.listOfPosts[0].message)).toBe(true);
+    });
+
+    it('isUsersPost test II:', function () {
+        scope.posts.listOfPosts = listOfPosts;
+        expect(scope.isUsersPost(scope.posts.listOfPosts[1].message)).toBe(false);
+    });
+
     it('deletePost success:', function () {
         scope.posts.listOfPosts = listOfPosts;
         var list = scope.posts.listOfPosts;
@@ -172,14 +182,12 @@ describe('Controller: PostsCtrl', function () {
         status = 500;
 
         scope.deletePost(scope.posts.listOfPosts, list, 0);
-        deferred.reject();
+        deferred.reject(status);
         rootScope.$apply();
         expect(scope.posts.listOfPosts.length).toBe(2);
     });
 
     it('getPosts success:', function () {
-/*        var deferred = q.defer();
-        var promise = deferred.promise;*/
         status = 200;
         data = {messages: listOfPosts};
 
