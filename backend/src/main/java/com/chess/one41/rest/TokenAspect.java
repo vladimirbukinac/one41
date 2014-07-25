@@ -7,6 +7,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -15,6 +16,10 @@ import java.lang.reflect.Method;
 @Component
 @Aspect
 public class TokenAspect {
+
+    @Autowired
+    private Session session;
+
     @Around(value = "@within(com.chess.one41.rest.Token) || @annotation(com.chess.one41.rest.Token)")
     public Object validateToken(ProceedingJoinPoint pjp) throws Throwable {
         if(isTokenRequired(pjp)) {
@@ -22,7 +27,7 @@ public class TokenAspect {
             if (StringUtils.isEmpty(token)) {
                 return new ErrorWrapper(new Error(Error.Type.TOKEN_INVALID));
             }
-            if(SessionUtil.isUserLoggedIn(token)) {
+            if(session.isUserLoggedIn(token)) {
                 return pjp.proceed();
             } else {
                 return new ErrorWrapper(new Error(Error.Type.TOKEN_EXPIRED));

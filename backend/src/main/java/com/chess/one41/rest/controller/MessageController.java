@@ -6,7 +6,7 @@ import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.MessageService;
 import com.chess.one41.backend.service.exception.EntityNotFoundException;
 import com.chess.one41.backend.service.exception.ServiceException;
-import com.chess.one41.rest.SessionUtil;
+import com.chess.one41.rest.Session;
 import com.chess.one41.rest.Token;
 import com.chess.one41.rest.model.ImageDto;
 import com.chess.one41.rest.model.MessageDto;
@@ -27,7 +27,10 @@ import java.util.List;
 public class MessageController {
 
     @Autowired
-    MessageService messageService;
+    private MessageService messageService;
+
+    @Autowired
+    private Session session;
 
     @RequestMapping(value="/latest", method= {RequestMethod.GET, RequestMethod.POST})
     public Response getLatestMessages(@RequestBody TokenEntity token) {
@@ -65,7 +68,7 @@ public class MessageController {
         }
         message.setImages(images);
 
-        message.setUserId(SessionUtil.getLoggedInUser(messageDto.getToken()).getId());
+        message.setUserId(session.getLoggedInUser(messageDto.getToken()).getId());
 
         messageService.createEntity(message);
 
@@ -74,7 +77,7 @@ public class MessageController {
 
     @RequestMapping(value="/delete", method= {RequestMethod.GET, RequestMethod.POST})
     public Response deleteMessage(@RequestBody MessageDto messageDto) throws ServiceException {
-        User user = SessionUtil.getLoggedInUser(messageDto.getToken());
+        User user = session.getLoggedInUser(messageDto.getToken());
         messageService.deleteMessage(messageDto.getId(), user.getId());
 
         return null;

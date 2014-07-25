@@ -3,7 +3,7 @@ package com.chess.one41.rest.controller;
 import com.chess.one41.backend.entity.User;
 import com.chess.one41.backend.service.UserService;
 import com.chess.one41.backend.service.exception.IllegalOperationException;
-import com.chess.one41.rest.SessionUtil;
+import com.chess.one41.rest.Session;
 import com.chess.one41.rest.Token;
 import com.chess.one41.rest.model.*;
 import com.chess.one41.rest.model.Error;
@@ -23,6 +23,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private Session session;
+
     @Token(required = false)
     @RequestMapping(value="/authenticate", method= {RequestMethod.GET, RequestMethod.POST})
     public Response authenticateUser(@RequestBody Authentication user) {
@@ -33,7 +36,7 @@ public class UserController {
 
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(authenticatedUser, userDto);
-        userDto.setToken(SessionUtil.createUserSession(authenticatedUser));
+        userDto.setToken(session.createUserSession(authenticatedUser));
 
         return new ResponseWrapper(userDto);
     }

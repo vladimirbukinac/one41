@@ -67,4 +67,13 @@ angular.module('mServices')
         };
 
         return Posts;
-    }]);
+    }])
+
+    .service('PostsFactory', function (Posts) {
+        return {
+            create: function () {
+                return new Posts();
+            }
+        };
+    });
+

@@ -4,9 +4,9 @@ angular.module('mPosts', ['mServices'])
     .config(function () {
     })
 
-    .controller('PostsCtrl', ['$rootScope', '$scope', '$log', '$interval', 'UserService', 'Posts', 'feDateService', 'FrontendProperties',
-        function ($rootScope, $scope, $log, $interval, UserService, Posts, feDateService, FrontendProperties) {
-            $scope.posts = new Posts();
+    .controller('PostsCtrl', ['$rootScope', '$scope', '$log', '$interval', 'UserService', 'PostsFactory', 'feDateService', 'FrontendProperties',
+        function ($rootScope, $scope, $log, $interval, UserService, PostsFactory, feDateService, FrontendProperties) {
+            $scope.posts = PostsFactory.create();
 
             var postsRefresh;
 
@@ -48,6 +48,7 @@ angular.module('mPosts', ['mServices'])
                             }
                         }
                     }, function (e) {
+                        $scope.posts.listOfPosts = [];
                         showAlert('error', e);
                     });
                 } else {
