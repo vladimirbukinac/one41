@@ -2,6 +2,8 @@
 
 describe('Controller: PostsCtrl', function () {
 
+    var PostsCtrl, scope, log, interval, listOfPosts;
+
     // load the controller's module
     beforeEach(module('ngCookies'));
     beforeEach(module('feProperties'));
@@ -89,10 +91,43 @@ describe('Controller: PostsCtrl', function () {
         });
     });
 
-    var PostsCtrl, scope, log, interval, listOfPosts;
+    beforeEach(function () {
+        var PostsFactoryMock = jasmine.createSpyObj('PostsFactoryMock', ['create']);
+
+        PostsFactoryMock.create = function () {
+            return {
+                listOfPosts: [],
+                getPosts: function (token) {
+                    token = null;
+
+                    return {
+                        then: function () {
+                        }
+                    };
+                },
+                deletePost: function (token, id) {
+                    token = null;
+                    id = null;
+
+                    return {
+                        then: function () {
+                        }
+                    };
+                },
+                populateImages: function (token, post) {
+                    token = null;
+                    post = null;
+                }
+            };
+        };
+
+        module(function ($provide) {
+            $provide.value('PostsFactoryMock', PostsFactoryMock);
+        });
+    });
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, $log, $interval, UserServiceMock, Posts, feDateServiceMock, FrontendProperties, listOfPostsMock) {
+    beforeEach(inject(function ($controller, $rootScope, $log, $interval, UserServiceMock, PostsFactoryMock, feDateServiceMock, FrontendProperties, listOfPostsMock) {
         scope = $rootScope.$new();
         log = $log;
         interval = $interval;
@@ -102,7 +137,7 @@ describe('Controller: PostsCtrl', function () {
             $log: log,
             $interval: interval,
             UserService: UserServiceMock,
-            Posts: Posts,
+            PostsFactory: PostsFactoryMock,
             feDateService: feDateServiceMock,
             FrontendProperties: FrontendProperties
         });
@@ -117,34 +152,43 @@ describe('Controller: PostsCtrl', function () {
         expect(scope.isUserLogged()).toBe(true);
     });
 
-    it('deletePost success:', function () {
+    it('deletePost success:', inject(function ($q, $rootScope) {
+        var deferred = $q.defer();
+        var promise = deferred.promise;
         scope.posts.listOfPosts = listOfPosts;
         var list = scope.posts.listOfPosts;
 
         spyOn(scope.posts, 'deletePost').andCallFake(function (token, id) {
             token = null;
             id = null;
-            scope.posts.listOfPosts.splice(0, 1);
-            return {
-                then: function () {
-                }
-            };
+
+            return promise;
         });
-        scope.deletePost(list, scope.posts.listOfPosts[0].message, 0);
+
+        scope.deletePost(scope.posts.listOfPosts, list, 0);
+        deferred.resolve();
+        $rootScope.$apply();
         expect(scope.posts.listOfPosts.length).toBe(1);
         expect(scope.posts.listOfPosts[0].message.id).toBe(2);
-    });
 
-    it('getPosts success:', function () {
+    }));
+
+    it('getPosts success:', inject(function ($q, $rootScope) {
+        var deferred = $q.defer();
+        var promise = deferred.promise;
+        var status = 200;
+        var data = {messages: listOfPosts};
+
         spyOn(scope.posts, 'getPosts').andCallFake(function () {
-            scope.posts.listOfPosts = listOfPosts;
-            return {
-                then: function () {
-                }
-            };
+            scope.posts.listOfPosts = data.messages;
+
+            return promise;
         });
+
         scope.getPosts();
+        deferred.resolve(data, status);
+        $rootScope.$apply();
         expect(scope.posts.listOfPosts.length).toBe(2);
-    });
+    }));
 
 });
