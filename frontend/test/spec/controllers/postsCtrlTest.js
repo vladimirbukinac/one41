@@ -72,7 +72,7 @@ describe('Controller: PostsCtrl', function () {
                     userId: 1,
                     creationDate: '23.07.2014 18:00:00',
                     images: [],
-                    text: 'Prvi post'
+                    text: 'First post'
                 }
             },
             {
@@ -81,7 +81,7 @@ describe('Controller: PostsCtrl', function () {
                     userId: 2,
                     creationDate: '16.07.2014 17:00:00',
                     images: [],
-                    text: 'Drugi post'
+                    text: 'Second post'
                 }
             }
         ];

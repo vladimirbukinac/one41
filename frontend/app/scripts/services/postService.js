@@ -9,7 +9,7 @@ angular.module('mServices')
 
         Posts.prototype.getPosts = function (token) {
             var deferred = $q.defer();
-            var data = {'token': {'token': token}};
+            var data = {token: {token: token}};
 
             var self = this;
 
@@ -37,7 +37,7 @@ angular.module('mServices')
 
         Posts.prototype.deletePost = function (token, id) {
             var deferred = $q.defer();
-            var data = {'message': {'id': id, 'token': token}};
+            var data = {message: {id: id, token: token}};
 
             $http.post('/rest/message/delete', data)
                 .success(function () {
@@ -52,7 +52,7 @@ angular.module('mServices')
 
         Posts.prototype.populateImages = function (token, post) {
             var deferred = $q.defer();
-            var data = {'message': {'id': post.id, 'token': token}};
+            var data = {message: {id: post.id, token: token}};
 
             $http.post('/rest/message/get', data)
                 .success(function (data, status) {

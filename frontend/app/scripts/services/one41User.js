@@ -9,7 +9,7 @@ angular.module('mServices')
 
         One41User.prototype.login = function (username, password) {
             var deferred = $q.defer();
-            var data = {'authentication': {'username': username, 'password': password}};
+            var data = {authentication: {username: username, password: password}};
 
             var self = this;
 
@@ -19,6 +19,10 @@ angular.module('mServices')
                         self.profile = data.user;
                         $cookieStore.put('one41CookieKey', data.user);
                         self.broadcastUserStatusChanged();
+                    } else {
+                        if (!angular.equals(self.profile, undefined)) {
+                            self.logout();
+                        }
                     }
 
                     deferred.resolve(data, status);

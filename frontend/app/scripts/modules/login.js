@@ -7,7 +7,7 @@ angular.module('mLogin', [])
     .controller('LoginModalInstanceCtrl', ['$rootScope', '$scope', '$modalInstance', '$log', 'UserService',
         function ($rootScope, $scope, $modalInstance, $log, UserService) {
             $scope.showFeedback = false;
-            $scope.user = {'username': null, 'password': null};
+            $scope.user = {username: null, password: null};
 
             $scope.login = function () {
                 if (!(angular.equals($scope.user.username, null) || angular.equals($scope.user.username, '') || angular.equals($scope.user.username, undefined) ||

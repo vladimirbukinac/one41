@@ -1,6 +1,3 @@
-/**
- * Created by vbukinac on 18.07.2014.
- */
 'use strict';
 
 angular.module('mServicesMock', [])
