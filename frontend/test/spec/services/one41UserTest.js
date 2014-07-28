@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: One41UserTest', function () {
+describe('Domain object: One41User', function () {
 
     var httpBackend, rootScope, cookie;
 
