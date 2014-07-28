@@ -3,8 +3,8 @@
  */
 'use strict';
 
-angular.module('one41feApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'feProperties', 'mServices', 'mMenu', 'mPosts', 'mNewPost', 'mProfile'])
-    .config(function () {
+angular.module('one41feApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'feProperties', 'mServices', 'mMenu', 'mPosts', 'mNewPost', 'mProfile', 'angularFileUpload'])
+    .config(function ($httpProvider) {
 
     })
 

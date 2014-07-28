@@ -14,10 +14,16 @@ import com.chess.one41.rest.model.Response;
 import com.chess.one41.rest.model.TokenEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.PropertyEditorSupport;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +31,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/rest/message")
 public class MessageController {
+
+    Logger log = Logger.getLogger(MessageController.class);
 
     @Autowired
     private MessageService messageService;
@@ -64,7 +72,42 @@ public class MessageController {
                 BeanUtils.copyProperties(imageDto, image);
                 image.setMessage(message);
                 images.add(image);
+
             }
+        }
+
+        message.setImages(images);
+
+        message.setUserId(session.getLoggedInUser(messageDto.getToken()).getId());
+
+        messageService.createEntity(message);
+
+        return null;
+    }
+    @RequestMapping(value="/createWithAttachment", method= {RequestMethod.POST})
+    //public Response createMessageMultipartTest(@ModelAttribute MessageDto message, @RequestParam(value = "file", required = false) MultipartFile file) throws EntityNotFoundException {
+    //public Response createMessageMultipartTest(@RequestParam(value = "message", required = false) MessageDto message) throws EntityNotFoundException {
+    public Response createMessageMultipartTest(@RequestParam(value = "message", required = false) MessageDto messageDto, @RequestParam(value = "file", required = false) List<MultipartFile> file ) throws EntityNotFoundException {
+
+        Message message = new Message();
+        BeanUtils.copyProperties(messageDto, message);
+
+        List<Image> images = new ArrayList<Image>();
+        if (file != null) {
+            for (MultipartFile multipartFile : file) {
+                Image image = new Image();
+                image.setName(multipartFile.getName());
+                try {
+                    image.setImage(multipartFile.getBytes());
+                } catch (IOException e) {
+                    log.error("Missing Multipart file in request for image: " + multipartFile.getName());
+                }
+
+                image.setMessage(message);
+                images.add(image);
+            }
+
+
         }
         message.setImages(images);
 
@@ -118,5 +161,42 @@ public class MessageController {
         public ResponseListWrapper(List<MessageDto> messageDto) {
             this.messageDto = messageDto;
         }
+    }
+
+   /* @InitBinder
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+            throws ServletException {
+
+        // Convert multipart object to byte[]
+        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+       // log.error("Init binder doing it's stuff");
+    }*/
+
+    @Token(required = false)
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+
+        // this custom editor handles MEssageDto as request parameter when used like <code> @RequestParam(value = "message", required = false) MessageDto messageDto </code>
+        dataBinder.registerCustomEditor(MessageDto.class, new PropertyEditorSupport() {
+            Object value;
+            @Override
+            public Object getValue() {
+                return value;
+            }
+
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    MessageDto message = mapper.readValue(text, MessageDto.class);
+                    value = message;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
     }
 }

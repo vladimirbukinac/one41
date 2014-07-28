@@ -11,12 +11,11 @@
                 <td width="60px">Text:</td>
                 <td width="100px"><input type="text" id="text" ng-model="message.text" placeholder="Text"  focus-me="focusInput"></td>
             </tr>
-            <!--
             <tr style="height: 40px">
                 <td width="60px">Files:</td>
-                <td width="100px"><input type="file" ng-file-select="onFileSelect($files)" ></td>
+                <td width="100px"><input type="file" ng-file-select="onFileSelect($files)" multiple></td>
             </tr>
-            -->
+
             <tr style="height: 40px">
                 <td align="center" colspan="2"><button class="btn-success" ng-click="post()">Post</button>&nbsp;&nbsp;<button class="btn-default" ng-click="cancel()">Cancel</button></td>
             </tr>

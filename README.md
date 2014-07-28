@@ -52,3 +52,84 @@ Yeoman upgrades
    This bypasses cross-domain issues when backend and frontend apps are not running on the same server/port. This is used for development purposes.
 2. Added <code>grunt-war</code> task for creating a war file from "dist" frontend code.
 2.1 Also changed jsHint rules for Gruntfile.js because grunt-war doesn't follow CamelCase naming convention for it's configuration parameters.
+
+3. modified <code>wiredep</code> to wire bower dependencies into karma.conf.js file
+
+
+<pre><code>
+wiredep: {
+      ...
+        test: {
+            src: ['<%= yeoman.app %>/../test/karma.conf.js'],
+            ignorePath:  /\.\.\//,
+            fileTypes: {
+                js: {
+                    block: /(([ \t]*)<!--\s*bower:*(\S*)\s*-->)(\n|\r|.)*?(<!--\s*endbower\s*-->)/gi,
+                    detect: {
+                        js: /<script.*src=['"](.+)['"]>/gi
+                    },
+                    replace: {
+                        js: '\'{{filePath}}\','
+                    }
+                }
+            }
+        }
+    },
+</code></pre>
+
+
+File Upload support
+===
+
+1. Client-side:  <code>bower install ng-file-upload -save<code>
+2. attach file to JSON - TODO
+
+3. server-side:  pom.xml
+
+<pre><code>
+<!-- Apache Commons Upload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+        <!-- Apache Commons Upload -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+</code></pre>
+
+applicationContext.xml
+
+<pre><code>
+        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+            <!--Max upload size is 8 MB-->
+            <property name="maxUploadSize" value="8192000" />
+        </bean>        
+</code></pre>
+
+MessageController.java
+
+<pre><code>
+
+  @InitBinder
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+            throws ServletException {
+
+        // Convert multipart object to byte[]
+        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+        log.error("Init binder doing it's stuff");
+    }
+    
+</code></pre>
+
+	
