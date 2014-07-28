@@ -5,18 +5,18 @@
     <div class="mainmenu" init-data>
         <div style="float: left; width: 250px" ng-controller="LoginCtrl">
             <div>
-                <button style="float: left; width: 75px" class="btn-success" ng-click="login()" ng-hide="isUserLogged()">Log in</button>
+                <button style="float: left; width: 75px" class="btn btn-success" ng-click="login()" ng-hide="isUserLogged()">Log in</button>
             </div>
             <div>
-                <button style="float: left; width: 75px" class="btn-success" ng-click="logout()" ng-show="isUserLogged()">Log out</button>
+                <button style="float: left; width: 75px" class="btn btn-success" ng-click="logout()" ng-show="isUserLogged()">Log out</button>
             </div>
             <div>
                 <label style="float: left;" ng-show="isUserLogged()">&nbsp;{{user.firstName}}&nbsp;{{user.lastName}}</label>
             </div>
         </div>
         <div style="float: right; width: 400px" align="center">
-            <button class="btn-default" ng-show="isUserLogged()" ng-controller="NewPostCtrl" ng-click="newPost()">New message</button>
-            <button class="btn-default" ng-show="isUserLogged()" ng-controller="ProfileCtrl">Profile</button>
+            <button class="btn btn-default" ng-show="isUserLogged()" ng-controller="NewPostCtrl" ng-click="newPost()">New message</button>
+            <button class="btn btn-default" ng-show="isUserLogged()" ng-controller="ProfileCtrl">Profile</button>
         </div>
     </div>
     <div class="datetime" align="right" ng-controller="DateTimeCtrl">

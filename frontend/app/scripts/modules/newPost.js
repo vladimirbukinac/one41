@@ -141,8 +141,7 @@ angular.module('mNewPost', ['mServices'])
         $scope.showAlert = function () {
         };
 
-        $scope.post = function (){
-
+        $scope.post = function () {
             newPostService.getPost().postMessage().then(function () {
                 $modalInstance.close('posted!');
                 $rootScope.$broadcast('MessagesChanged');

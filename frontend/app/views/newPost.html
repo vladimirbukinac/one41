@@ -5,19 +5,23 @@
 
     <p><b class="header">New Post</b></p>
 
-    <form>
+    <form name="messageForm" ng-submit="post()" novalidate>
         <table width="250px" >
             <tr style="height: 40px">
                 <td width="60px">Text:</td>
-                <td width="100px"><input type="text" id="text" ng-model="message.text" placeholder="Text"  focus-me="focusInput"></td>
+                <td width="100px"><input type="text" id="text" ng-model="message.text" placeholder="Text"  focus-me="focusInput" maxlength="50" required="true"></td>
             </tr>
 
             <tr style="height: 40px">
                 <td width="60px">Files:</td>
                 <td width="100px"><input type="file" ng-file-select="onFileSelect($files)" multiple></td>
             </tr>
+
             <tr style="height: 40px">
-                <td align="center" colspan="2"><button class="btn-success" ng-click="post()">Post</button>&nbsp;&nbsp;<button class="btn-default" ng-click="cancel()">Cancel</button></td>
+                <td align="center" colspan="2">
+                    <button type="submit" class="btn btn-primary" ng-disabled="messageForm.$invalid">Post</button>
+                    &nbsp;&nbsp;<button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+                </td>
             </tr>
 
         </table>
