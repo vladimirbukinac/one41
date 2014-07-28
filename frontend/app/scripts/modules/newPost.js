@@ -25,7 +25,7 @@ angular.module('mNewPost', ['mServices'])
                 }
             });
 
-            newPostModalInstance.result.then(function (response) {
+            newPostModalInstance.result.then(function () {
                 // $scope.newPost = response.newPost;
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
@@ -48,12 +48,6 @@ angular.module('mNewPost', ['mServices'])
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
-
-        $scope.closeAlert = function () {
-        };
-
-        function showAlert(type, message) {
-        }
 
     }])
 
@@ -125,7 +119,7 @@ angular.module('mNewPost', ['mServices'])
                 return newPost;
             }
 
-        }
+        };
 
     } ])
 
@@ -144,49 +138,37 @@ angular.module('mNewPost', ['mServices'])
         $scope.closeAlert = function () {
         };
 
-        $scope.showAlert = function (type, message) {
+        $scope.showAlert = function () {
         };
 
         $scope.post = function (){
 
-            newPostService.getPost().postMessage().then(function (result) {
+            newPostService.getPost().postMessage().then(function () {
                 $modalInstance.close('posted!');
                 $rootScope.$broadcast('MessagesChanged');
             });
-        }
+        };
 
         $scope.onFileSelect = function ($files){
 
-            //$scope.message.images = $files;
-           /* $scope.message.images = [];
-            for (var i = 0; i < $files.length; i++) {
-                var file = $files[i];
-                var image = {};
-                image.name = file.name;
-                image.imageMultipart = file;
-                image.image = file;
-                $scope.message.images.push({'image': image});
-            }*/
-
             $scope.message.images = [];
-            for (var i = 0; i < $files.length; i++) { //for multiple files
-                (function(file) {
-                    var name = file.name;
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        // get file content
-
-                        var image = {};
-                        image.name = name;
-                        image.image = reader.result.split("base64,")[1];
-                        $scope.message.images.push({image: image});
-                    }
-                    reader.readAsDataURL(file);
-                })($files[i]);
+            function setupReader(file) {
+                var name = file.name;
+                var reader = new FileReader();
+                reader.onload = function() {
+                    // get file content
+                    var image = {};
+                    image.name = name;
+                    image.image = reader.result.split('base64,')[1];
+                    $scope.message.images.push({image: image});
+                };
+                reader.readAsDataURL(file);
             }
 
+            for (var i = 0; i < $files.length; i++) { setupReader($files[i]); }
 
-        }
+
+        };
 
 
     }]);
