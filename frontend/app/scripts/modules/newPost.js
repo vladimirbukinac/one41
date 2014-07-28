@@ -158,7 +158,7 @@ angular.module('mNewPost', ['mServices'])
         $scope.onFileSelect = function ($files){
 
             //$scope.message.images = $files;
-            $scope.message.images = [];
+           /* $scope.message.images = [];
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
                 var image = {};
@@ -166,7 +166,25 @@ angular.module('mNewPost', ['mServices'])
                 image.imageMultipart = file;
                 image.image = file;
                 $scope.message.images.push({'image': image});
+            }*/
+
+            $scope.message.images = [];
+            for (var i = 0; i < $files.length; i++) { //for multiple files
+                (function(file) {
+                    var name = file.name;
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        // get file content
+
+                        var image = {};
+                        image.name = name;
+                        image.image = reader.result.split("base64,")[1];
+                        $scope.message.images.push({image: image});
+                    }
+                    reader.readAsDataURL(file);
+                })($files[i]);
             }
+
 
         }
 
