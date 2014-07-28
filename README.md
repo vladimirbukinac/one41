@@ -52,3 +52,12 @@ Yeoman upgrades
    This bypasses cross-domain issues when backend and frontend apps are not running on the same server/port. This is used for development purposes.
 2. Added <code>grunt-war</code> task for creating a war file from "dist" frontend code.
 2.1 Also changed jsHint rules for Gruntfile.js because grunt-war doesn't follow CamelCase naming convention for it's configuration parameters.
+
+
+Running Cucumber tests for backend
+===
+
+There are two ways to run Cucumber tests:
+1. Directly through IDE with an appropriate Cucumber plugin installed, by right clicking on the feature (or directory containing features) and choosing the option "Run" (or "Debug"). This is a convenient way of running (specific) tests while writing them.
+2. Through a Java class runner, CucumberTestRunner. This allows us to run Cucumber tests via maven: mvn test -Dtest=CucumberTestRunner
+2.1 @CucumberOptions annotation contained in the CucumberTestRunner class has parameters which can be used to modify some aspects of running the Cucumber tests via this class.
