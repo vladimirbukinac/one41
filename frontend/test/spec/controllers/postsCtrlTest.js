@@ -5,7 +5,7 @@ describe('Controller: PostsCtrl', function () {
     var PostsCtrl, scope, log, interval, listOfPosts, q, rootScope, deferred, promise, data, status;
 
     // load the controller's module
-    beforeEach(module('ngCookies'));
+    //beforeEach(module('ngCookies'));
     beforeEach(module('feProperties'));
     beforeEach(module('mPosts'));
     beforeEach(function () {

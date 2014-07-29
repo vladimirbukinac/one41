@@ -79,7 +79,7 @@ describe('Domain object: One41User', function () {
             username = 'johndoe',
             password = 'secret';
 
-        httpBackend.when('POST', '/rest/user/authenticate').respond(200, {'error': {'errortype': 'AUTHENTICATE_INVALID_CREDENTIALS'}});
+        httpBackend.when('POST', '/rest/user/authenticate').respond(200, {error: {errortype: 'AUTHENTICATE_INVALID_CREDENTIALS'}});
 
         one41User.login(username, password);
         httpBackend.flush();
@@ -111,6 +111,7 @@ describe('Domain object: One41User', function () {
 
         expect(one41User.profile).toBe(undefined);
         expect(cookie).toBe(undefined);
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('UserStatusChanged');
     }));
 
     it('get user profile',  inject(function(One41User) {
@@ -119,5 +120,28 @@ describe('Domain object: One41User', function () {
         var one41User = new One41User();
 
         expect(one41User.getUserProfile()).toBe(one41User.profile);
+    }));
+
+    it('is user logged in, true',  inject(function(One41User) {
+        cookie = {'username': 'johndoe', 'password': 'secret'};
+
+        var one41User = new One41User();
+
+        expect(one41User.isUserLogged()).toBe(true);
+    }));
+
+    it('is user logged in, false',  inject(function(One41User) {
+        cookie = undefined;
+
+        var one41User = new One41User();
+
+        expect(one41User.isUserLogged()).toBe(false);
+    }));
+
+    it('broadcast user status changed',  inject(function(One41User) {
+        var one41User = new One41User();
+
+        one41User.broadcastUserStatusChanged();
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('UserStatusChanged');
     }));
 });

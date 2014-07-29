@@ -24,11 +24,14 @@ angular.module('mServices')
 
                             self.populateImages(UserService.getUser().getUserProfile().token, self.listOfPosts[i].message);
                         }
+                    } else {
+                        self.listOfPosts = [];
                     }
 
                     deferred.resolve(data, status);
                 })
                 .error(function (status) {
+                    self.listOfPosts = [];
                     deferred.reject(status);
                 });
 
