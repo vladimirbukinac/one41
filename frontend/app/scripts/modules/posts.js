@@ -34,8 +34,6 @@ angular.module('mPosts', ['mServices'])
 
                             $scope.showFeedback = false;
                         } else {
-                            $scope.posts.listOfPosts = []; //this should be in postService, change postsCtrlTest
-
                             switch (result.error.errortype) {
                                 case 'TOKEN_EXPIRED':
                                     showAlert('error', 'Token is expired!');
@@ -48,10 +46,9 @@ angular.module('mPosts', ['mServices'])
                             }
                         }
                     }, function (e) {
-                        $scope.posts.listOfPosts = []; //this should be in postService, change postsCtrlTest
                         showAlert('error', e);
                     });
-                } else {
+                } else { // this shouldn't be here
                     $scope.posts.listOfPosts = [];
                 }
             };

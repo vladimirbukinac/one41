@@ -100,7 +100,11 @@ describe('Controller: PostsCtrl', function () {
                 getPosts: function (token) {
                     token = null;
 
-                    scope.posts.listOfPosts = data.messages;
+                    if (angular.equals(data.error, undefined)) {
+                        scope.posts.listOfPosts = data.messages;
+                    } else {
+                        scope.posts.listOfPosts = [];
+                    }
 
                     return promise;
                 },
