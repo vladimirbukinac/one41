@@ -51,6 +51,10 @@ angular.module('mPosts', ['mServices'])
                 } else { // this shouldn't be here
                     $scope.posts.listOfPosts = [];
                 }
+
+                if (angular.equals($scope.posts.listOfPosts, [])) {
+                    $scope.someImage = '/images/blank.jpg';
+                }
             };
 
             $scope.deletePost = function (list, post, index) {
@@ -68,7 +72,6 @@ angular.module('mPosts', ['mServices'])
             $scope.$on('MessagesChanged', function () {
                 $scope.getPosts();
             });
-
 
             $scope.closeAlert = function () {
                 $scope.showFeedback = false;
