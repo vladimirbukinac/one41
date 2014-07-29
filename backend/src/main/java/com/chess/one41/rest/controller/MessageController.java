@@ -42,14 +42,20 @@ public class MessageController {
 
         List<MessageDto> latestMessagesDto = new ArrayList<MessageDto>();
         for(int i = 0; i < latestMessages.size(); i++){
-            MessageDto messageDto = new MessageDto();
-            BeanUtils.copyProperties(latestMessages.get(i) , messageDto);
-            messageDto.setUserId(latestMessages.get(i).getUser().getId());
-            messageDto.setImages(new ArrayList<ImageDto>());
+            Message message = latestMessages.get(i);
+            MessageDto messageDto = getMessageDto(message);
             latestMessagesDto.add(messageDto);
         }
 
         return new ResponseListWrapper(latestMessagesDto);
+    }
+
+    private MessageDto getMessageDto(Message message) {
+        MessageDto messageDto = new MessageDto();
+        BeanUtils.copyProperties(message, messageDto);
+        messageDto.setUserId(message.getUser().getId());
+        messageDto.setImages(new ArrayList<ImageDto>());
+        return messageDto;
     }
 
     @RequestMapping(value="/create", method= {RequestMethod.GET, RequestMethod.POST})
@@ -72,7 +78,7 @@ public class MessageController {
 
         messageService.createEntity(message);
 
-        return null;
+        return new ResponseWrapper(getMessageDto(message));
     }
 
     @RequestMapping(value="/delete", method= {RequestMethod.GET, RequestMethod.POST})
