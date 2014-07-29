@@ -21,7 +21,7 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
 
     }])
 
-    .controller('LoginCtrl', ['$scope', '$modal', '$log', '$cookieStore', '$timeout', 'UserService', function ($scope, $modal, $log, $cookieStore, $timeout, UserService) {
+    .controller('LoginCtrl', ['$scope', '$modal', '$log', '$timeout', 'UserService', function ($scope, $modal, $log, $timeout, UserService) {
         var initUser;
 
         // this is not nice solution

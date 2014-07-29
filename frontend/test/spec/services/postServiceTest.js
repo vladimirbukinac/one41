@@ -93,7 +93,6 @@ describe('Domain object: Posts', function () {
                 login: function (username, password) {
                     username = undefined;
                     password = undefined;
-                    return (user, 200);
                 },
                 logout: function () {
                 }
