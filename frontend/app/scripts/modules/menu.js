@@ -45,6 +45,22 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
             });
         };
 
+        $scope.register = function () {
+            var profileModalInstance = $modal.open({
+                templateUrl: 'views/profile.html',
+                controller: 'ProfileModalInstanceCtrl',
+                keyboard: true,
+                backdrop: 'static',
+                windowClass: 'app-modal-window'
+            });
+
+            profileModalInstance.result.then(function () {
+                $scope.user = UserService.getUser().getUserProfile();
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
         $scope.logout = function () {
             UserService.getUser().logout();
         };

@@ -52,5 +52,20 @@ angular.module('mServices')
             $rootScope.$broadcast('UserStatusChanged');
         };
 
+        One41User.prototype.register = function (user) {
+            var deferred = $q.defer();
+            var data = {'user': {'email': user.email, 'username': user.username, 'password': user.password, 'firstName': user.firstName, 'lastName': user.lastName, 'pictureUrl': user.pictureUrl}};
+
+            $http.post('/rest/user/create', data)
+                .success(function (data, status) {
+                    deferred.resolve(data, status);
+                })
+                .error(function (status) {
+                    deferred.reject(status);
+                });
+
+            return deferred.promise;
+        };
+
         return One41User;
     }]);

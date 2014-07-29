@@ -13,6 +13,9 @@
             <div>
                 <label style="float: left;" ng-show="isUserLogged()">&nbsp;{{user.firstName}}&nbsp;{{user.lastName}}</label>
             </div>
+            <div>
+                <button style="float: left; width: 75px" class="btn-success" ng-click="register()" ng-hide="isUserLogged()">Register</button>
+            </div>
         </div>
         <div style="float: right; width: 400px" align="center">
             <button class="btn btn-default" ng-show="isUserLogged()" ng-controller="NewPostCtrl" ng-click="newPost()">New message</button>

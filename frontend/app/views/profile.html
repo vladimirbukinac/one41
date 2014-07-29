@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="header" style="visibility: hidden; height: 0px">
+        <p>Header</p>
+    </div>
+
+    <p><b class="header">Register new user</b></p>
+
+    <form name="RegisterForm">
+        <table width="250px" >
+            <tr style="height: 40px">
+                <td width="60px">Email:</td>
+                <td width="100px"><input type="text" name="email" id="email" ng-model="user.email" placeholder="Email" focus-me="focusInput" required></td>
+            </tr>
+            <tr style="height: 40px">
+                <td width="60px">Username:</td>
+                <td width="100px"><input type="text" name="username" id="username" ng-model="user.username" placeholder="Username" required></td>
+            </tr>
+            <tr style="height: 40px">
+                <td>Password:</td>
+                <td><input name="password" placeholder="Password" type="password" ng-model="user.password" required></td>
+            </tr>
+            <tr style="height: 40px">
+                <td>First name:</td>
+                <td><input name="firstName" placeholder="firstName" ng-model="user.firstName"></td>
+            </tr>
+            <tr style="height: 40px">
+                <td>Last name:</td>
+                <td><input name="lastName" placeholder="lastName" ng-model="user.lastName"></td>
+            </tr>
+            <tr style="height: 40px">
+                <td>Picture URL:</td>
+                <td><input name="pictureUrl" placeholder="pictureUrl" ng-model="user.pictureUrl"></td>
+            </tr>
+            <tr style="height: 40px">
+                <td align="center" colspan="2"><button class="btn-success" ng-click="register()">Register</button>&nbsp;&nbsp;<button class="btn-default" ng-click="cancel()">Cancel</button></td>
+            </tr>
+        </table>
+    </form>
+    <alert style="color: #FF0000; font-weight: bold; font-style: italic; width: 250px" ng-show=showFeedback close="closeAlert()" type=alertType>{{status}}</alert>
+
+    <div class="footer" style="visibility: hidden; height: 0px">
+        <p>Footer</p>
+    </div>
+</div>
