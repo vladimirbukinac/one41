@@ -2,7 +2,7 @@
 
 describe('Domain object: Posts', function () {
 
-    var httpBackend;
+    var httpBackend, posts, userService;
     var imagesMessage1 = [
         {
             image: {
@@ -132,164 +132,147 @@ describe('Domain object: Posts', function () {
     });
 
 
-    /*beforeEach(inject(function (UserService, feDateService) {
+    beforeEach(inject(function (PostsFactory, UserService, feDateService, Posts) {
+        posts = PostsFactory.create(Posts);
+        userService = UserService;
+
+     }));
 
 
-     }));*/
-
-
-    it('posts should not be undefined', inject(function (UserService, feDateService, Posts) {
+    it('posts should not be undefined', inject(function (Posts) {
         var posts = new Posts();
 
         expect(posts).toNotBe(undefined);
     }));
 
-    it('Posts factory creates posts, posts should not be undefined', inject(function (PostsFactory, UserService, feDateService, Posts) {
-        var posts = PostsFactory.create(Posts);
-
+    it('Posts factory creates posts, posts should not be undefined', function () {
         expect(posts).toNotBe(undefined);
         expect(posts.listOfPosts).toEqual([]);
-    }));
+    });
 
-    it('get posts without images, success', inject(function (PostsFactory, UserService, feDateService, Posts) {
-        var posts = PostsFactory.create(Posts);
-
+    it('get posts without images, success', function () {
         httpBackend.when('POST', '/rest/message/latest', {
             token: {
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(200, {messages: listOfPosts});
 
         httpBackend.when('POST', '/rest/message/get').respond(200, {message: {images: []}});
 
-        posts.getPosts(UserService.getUser().getUserProfile().token);
+        posts.getPosts(userService.getUser().getUserProfile().token);
         httpBackend.flush();
 
         expect(posts.listOfPosts).toEqual(listOfPostsAndDateFormatted);
-    }));
+    });
 
-    it('get posts with images, success', inject(function (PostsFactory, UserService, feDateService, Posts) {
-        var posts = PostsFactory.create(Posts);
-
+    it('get posts with images, success', function () {
         httpBackend.when('POST', '/rest/message/latest', {
             token: {
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(200, {messages: listOfPosts});
 
         httpBackend.when('POST', '/rest/message/get', {
             message: {
                 id: message1.message.id,
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(200, {message: {images: imagesMessage1}});
 
         httpBackend.when('POST', '/rest/message/get', {
             message: {
                 id: message2.message.id,
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(200, {message: {images: []}});
 
-        posts.getPosts(UserService.getUser().getUserProfile().token);
+        posts.getPosts(userService.getUser().getUserProfile().token);
         httpBackend.flush();
 
 
         expect(posts.listOfPosts).toEqual(listOfPostsAndDateFormattedWithImages);
-    }));
+    });
 
-    it('get posts, error TOKEN_EXPIRED', inject(function (PostsFactory, UserService, feDateService, Posts) {
-        var posts = PostsFactory.create(Posts);
-
+    it('get posts, error TOKEN_EXPIRED', function () {
         httpBackend.when('POST', '/rest/message/latest', {
             token: {
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(200, {error: {errortype: 'TOKEN_EXPIRED'}});
 
-        posts.getPosts(UserService.getUser().getUserProfile().token);
+        posts.getPosts(userService.getUser().getUserProfile().token);
         httpBackend.flush();
 
         expect(posts.listOfPosts).toEqual([]);
-    }));
+    });
 
-    it('get posts, error 500', inject(function (PostsFactory, UserService, feDateService, Posts) {
-        var posts = PostsFactory.create(Posts);
-
+    it('get posts, error 500', function () {
         httpBackend.when('POST', '/rest/message/latest', {
             token: {
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(500, 'Internal Server Error');
 
-        posts.getPosts(UserService.getUser().getUserProfile().token);
+        posts.getPosts(userService.getUser().getUserProfile().token);
         httpBackend.flush();
 
         expect(posts.listOfPosts).toEqual([]);
-    }));
+    });
 
-    // this test doesn't do anything
-    it('delete post, success', inject(function (PostsFactory, UserService, feDateService, Posts) {
-        var posts = PostsFactory.create(Posts);
-
+    // this test doesn't do much, because delete post just return success or error and doesn't do anything else
+    it('delete post, success', function () {
         posts.listOfPosts = listOfPostsAndDateFormattedWithImages;
 
         httpBackend.when('POST', '/rest/message/delete', {
             message: {
                 id: message1.message.id,
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(200);
 
-        posts.deletePost(UserService.getUser().getUserProfile().token, message1.message.id);
+        posts.deletePost(userService.getUser().getUserProfile().token, message1.message.id);
         httpBackend.flush();
 
         expect(posts.listOfPosts).toEqual(listOfPostsAndDateFormattedWithImages);
-    }));
+    });
 
-    // this test doesn't do anything
-    it('delete post, error 500', inject(function (PostsFactory, UserService, feDateService, Posts) {
-        var posts = PostsFactory.create(Posts);
-
+    // this test doesn't do much, because delete post just return success or error and doesn't do anything else
+    it('delete post, error 500', function () {
         posts.listOfPosts = listOfPostsAndDateFormattedWithImages;
 
         httpBackend.when('POST', '/rest/message/delete', {
             message: {
                 id: message1.message.id,
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(500);
 
-        posts.deletePost(UserService.getUser().getUserProfile().token, message1.message.id);
+        posts.deletePost(userService.getUser().getUserProfile().token, message1.message.id);
         httpBackend.flush();
 
         expect(posts.listOfPosts).toEqual(listOfPostsAndDateFormattedWithImages);
-    }));
+    });
 
-    it('populate images, success', inject(function (PostsFactory, UserService, feDateService, Posts) {
-        var posts = PostsFactory.create(Posts);
-
+    it('populate images, success', function () {
         posts.listOfPosts = listOfPostsAndDateFormatted;
 
         httpBackend.when('POST', '/rest/message/get', {
             message: {
                 id: message1.message.id,
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(200, {message: {images: imagesMessage1}});
 
-        posts.populateImages(UserService.getUser().getUserProfile().token, posts.listOfPosts[0].message);
+        posts.populateImages(userService.getUser().getUserProfile().token, posts.listOfPosts[0].message);
         httpBackend.flush();
 
         expect(posts.listOfPosts).toEqual(listOfPostsAndDateFormattedWithImages);
-    }));
+    });
 
-    it('populate images, error', inject(function (PostsFactory, UserService, feDateService, Posts) {
-        var posts = PostsFactory.create(Posts);
-
+    it('populate images, error', function () {
         posts.listOfPosts = listOfPostsAndDateFormatted;
 
         httpBackend.when('POST', '/rest/message/get', {
             message: {
                 id: message1.message.id,
-                token: UserService.getUser().getUserProfile().token}
+                token: userService.getUser().getUserProfile().token}
         }).respond(500, {message: {images: imagesMessage1}});
 
-        posts.populateImages(UserService.getUser().getUserProfile().token, posts.listOfPosts[0].message);
+        posts.populateImages(userService.getUser().getUserProfile().token, posts.listOfPosts[0].message);
         httpBackend.flush();
 
         expect(posts.listOfPosts).toEqual(listOfPostsAndDateFormatted);
-    }));
+    });
 
 });
