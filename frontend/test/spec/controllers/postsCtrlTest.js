@@ -4,7 +4,6 @@ describe('Controller: PostsCtrl', function () {
 
     var PostsCtrl, scope, log, interval, listOfPosts, q, rootScope, deferred, promise, data, status;
 
-    // load the controller's module
     //beforeEach(module('ngCookies'));
     beforeEach(module('feProperties'));
     beforeEach(module('mPosts'));
@@ -161,11 +160,13 @@ describe('Controller: PostsCtrl', function () {
 
     it('isUsersPost test I:', function () {
         scope.posts.listOfPosts = listOfPosts;
+
         expect(scope.isUsersPost(scope.posts.listOfPosts[0].message)).toBe(true);
     });
 
     it('isUsersPost test II:', function () {
         scope.posts.listOfPosts = listOfPosts;
+
         expect(scope.isUsersPost(scope.posts.listOfPosts[1].message)).toBe(false);
     });
 
@@ -176,11 +177,15 @@ describe('Controller: PostsCtrl', function () {
         scope.deletePost(scope.posts.listOfPosts, list, 0);
         deferred.resolve();
         rootScope.$apply();
+
         expect(scope.posts.listOfPosts.length).toBe(1);
         expect(scope.posts.listOfPosts[0].message.id).toBe(2);
+        expect(scope.status).toBe(undefined);
+        expect(scope.showFeedback).toBe(false);
+        expect(scope.alertType).toBe(undefined);
     });
 
-    it('deletePost error:', function () {
+    it('deletePost error, error status 500:', function () {
         scope.posts.listOfPosts = listOfPosts;
         var list = scope.posts.listOfPosts;
         status = 500;
@@ -188,7 +193,11 @@ describe('Controller: PostsCtrl', function () {
         scope.deletePost(scope.posts.listOfPosts, list, 0);
         deferred.reject(status);
         rootScope.$apply();
+
         expect(scope.posts.listOfPosts.length).toBe(2);
+        expect(scope.status).toBe(500);
+        expect(scope.showFeedback).toBe(true);
+        expect(scope.alertType).toBe('error');
     });
 
     it('getPosts success:', function () {
@@ -198,25 +207,65 @@ describe('Controller: PostsCtrl', function () {
         scope.getPosts();
         deferred.resolve(data, status);
         rootScope.$apply();
+
         expect(scope.posts.listOfPosts.length).toBe(2);
+        expect(scope.status).toBe(undefined);
+        expect(scope.showFeedback).toBe(false);
+        expect(scope.alertType).toBe(undefined);
     });
 
-    it('getPosts success with error type TOKEN_EXPIRED:', function () {
+    it('getPosts error, error type TOKEN_EXPIRED:', function () {
         status = 200;
         data = {error: {errortype: 'TOKEN_EXPIRED'}};
 
         scope.getPosts();
         deferred.resolve(data, status);
         rootScope.$apply();
+
         expect(scope.posts.listOfPosts.length).toBe(0);
+        expect(scope.status).toBe('Token is expired!');
+        expect(scope.showFeedback).toBe(true);
+        expect(scope.alertType).toBe('error');
     });
 
-    it('getPosts success with 500 Internal Server Error:', function () {
+    it('getPosts error, error type TOKEN_INVALID:', function () {
+        status = 200;
+        data = {error: {errortype: 'TOKEN_INVALID'}};
+
+        scope.getPosts();
+        deferred.resolve(data, status);
+        rootScope.$apply();
+
+        expect(scope.posts.listOfPosts.length).toBe(0);
+        expect(scope.status).toBe('Token is invalid!');
+        expect(scope.showFeedback).toBe(true);
+        expect(scope.alertType).toBe('error');
+    });
+
+    it('getPosts error, error type UNKNOWN_ERROR:', function () {
+        status = 200;
+        data = {error: {errortype: 'UNKNOWN_ERROR'}};
+
+        scope.getPosts();
+        deferred.resolve(data, status);
+        rootScope.$apply();
+
+        expect(scope.posts.listOfPosts.length).toBe(0);
+        expect(scope.status).toBe('Unknown error!');
+        expect(scope.showFeedback).toBe(true);
+        expect(scope.alertType).toBe('error');
+    });
+
+    it('getPosts error, error status 500 Internal Server Error:', function () {
         status = 500;
 
         scope.getPosts();
         deferred.reject(status);
         rootScope.$apply();
+
         expect(scope.posts.listOfPosts.length).toBe(0);
+        expect(scope.status).toBe(500);
+        expect(scope.showFeedback).toBe(true);
+        expect(scope.alertType).toBe('error');
     });
 });
