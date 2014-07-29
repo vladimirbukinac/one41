@@ -14,9 +14,13 @@
 
             <tr style="height: 40px">
                 <td width="60px">Files:</td>
-                <td width="100px"><input type="file" ng-file-select="onFileSelect($files)" multiple></td>
+                <td width="100px"><input type="file" ng-file-select="onFileSelect($files)" multiple accept="image/*"></td>
             </tr>
-
+            <tr>
+                <td colspan="4">
+                    <button type="button" ng-repeat="image in message.images" class="btn btn-danger" ng-click="deleteImage($index)">{{image.image.name| limitTo:12}}{{image.image.name.length > 12 ? '...' : ''}}</button>
+                </td>
+            </tr>
             <tr style="height: 40px">
                 <td align="center" colspan="2">
                     <button type="submit" class="btn btn-primary" ng-disabled="messageForm.$invalid">Post</button>
