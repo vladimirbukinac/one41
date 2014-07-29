@@ -24,6 +24,7 @@ public class MessageDaoTest extends BaseIntegrationTest {
         User existingUser = new User();
         existingUser.setUsername("alekdov");
         existingUser.setPassword("pass");
+        existingUser.setEmail("email@email.com");
         userDao.create(existingUser);
 
         for (int i = 0; i < 13; i++) {

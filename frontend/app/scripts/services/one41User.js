@@ -67,5 +67,20 @@ angular.module('mServices')
             return deferred.promise;
         };
 
+        One41User.prototype.update = function (user) {
+            var deferred = $q.defer();
+            var data = {'user': {'id': user.id, 'email': user.email, 'username': user.username, 'password': user.password, 'firstName': user.firstName, 'lastName': user.lastName, 'pictureUrl': user.pictureUrl, 'token': user.token}};
+
+            $http.post('/rest/user/update', data)
+                .success(function (data, status) {
+                    deferred.resolve(data, status);
+                })
+                .error(function (status) {
+                    deferred.reject(status);
+                });
+
+            return deferred.promise;
+        };
+
         return One41User;
     }]);
