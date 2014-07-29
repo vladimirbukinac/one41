@@ -130,8 +130,6 @@ angular.module('mNewPost', ['mServices'])
     .controller('NewPostModalInstanceCtrl', ['$rootScope', '$scope', 'UserService', '$modalInstance', '$log', 'newPostService', function ($rootScope, $scope, UserService, $modalInstance, $log, newPostService) {
 
 
-        //$scope.newPost = {};
-        ///$scope.newPost.text = 'Some text 2...';
         $scope.message = newPostService.getPost();
 
         $scope.cancel = function () {

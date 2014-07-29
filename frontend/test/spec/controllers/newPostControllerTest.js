@@ -23,9 +23,11 @@ describe('Controller: NewPostCtrl', function () {
 
         var NewPostModelMock = jasmine.createSpyObj('NewPostModelMock', ['getUser', 'postMessage']);
 
+        NewPostModelMock.text = 'test';
+        NewPostModelMock.images = [];
         NewPostModelMock.postMessage = function(){
             return promise;
-        }
+        };
         module(function ($provide) {
             $provide.service('NewPostServiceMock', function () {
 
@@ -34,7 +36,7 @@ describe('Controller: NewPostCtrl', function () {
                         return NewPostModelMock;
                     }
 
-                }
+                };
 
             });
         });
@@ -78,7 +80,21 @@ describe('Controller: NewPostCtrl', function () {
         });
     });
 
-    var PostsCtrl, scope, log, interval;
+    var eventListener;
+
+    beforeEach(function(){
+        eventListener = jasmine.createSpy();
+        spyOn(window, 'FileReader').andReturn({
+            addEventListener: eventListener,
+            onload: function () {},
+            readAsDataURL: function (){
+                this.onload();
+            },
+            result: 'base64,file contents'
+        });
+    });
+
+    var scope, log;
 
     var NewPostModalInsCtrl;
     // Initialize the controller and a mock scope
@@ -99,9 +115,23 @@ describe('Controller: NewPostCtrl', function () {
 
     it('post test:', function () {
         scope.post();
-        deferred.resolve();
+        deferred.resolve({'message':{'id':114,'userId':1,'text':'newPost... ','creationDate':1406634856868,'images':[]}});
         rootScope.$apply();
         expect(ModalMock.close).toHaveBeenCalled();
+    });
+
+    it('post resolve error test:', function () {
+        scope.post();
+        deferred.resolve({'error': 'test'});
+        rootScope.$apply();
+        expect(scope.alertType).toEqual('error');
+    });
+
+    it('post reject error test:', function () {
+        scope.post();
+        deferred.reject({'error': 'test'});
+        rootScope.$apply();
+        expect(scope.alertType).toEqual('error');
     });
 
     it('cancel test:', function () {
@@ -112,10 +142,10 @@ describe('Controller: NewPostCtrl', function () {
     });
 
     it('onFileSelect test:', function () {
-        scope.onFileSelect({});
-        deferred.resolve();
-        rootScope.$apply();
+        scope.onFileSelect([{name: 'file name'}]);
         expect(scope.message.images).toBeDefined();
+        expect(scope.message.images.length).toEqual(1);
+        expect(scope.message.images[0].image.image).toEqual('file contents');
     });
 
 });
