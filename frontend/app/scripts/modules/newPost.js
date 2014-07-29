@@ -57,7 +57,7 @@ angular.module('mNewPost', ['mServices'])
 
         var newPost = function (){
             this.text = 'newPost... ';
-
+            this.images = [];
         };
 
         newPost.prototype.postMessage = function () {
@@ -68,8 +68,11 @@ angular.module('mNewPost', ['mServices'])
             message.token = UserService.getUser().getUserProfile().token;
             var data = {'message': message};
 
+            var self = this;
             $http.post('/rest/message/create', data)
                 .success(function (data/*, status, headers, scope*/) {
+                    self.text = 'newPost... ';
+                    self.images = [];
                     deferred.resolve(data);
                 })
                 .error(function (/*data, */status/*, headers, scope*/) {
@@ -136,21 +139,39 @@ angular.module('mNewPost', ['mServices'])
         };
 
         $scope.closeAlert = function () {
+            $scope.showFeedback = false;
         };
 
-        $scope.showAlert = function () {
-        };
+        function showAlert(type, message) {
+            $scope.status = message;
+            $scope.showFeedback = true;
+            $scope.alertType = type;
+        }
 
         $scope.post = function () {
-            newPostService.getPost().postMessage().then(function () {
-                $modalInstance.close('posted!');
-                $rootScope.$broadcast('MessagesChanged');
+            newPostService.getPost().postMessage().then(function (data) {
+
+                if (angular.equals(data.error, undefined)) {
+                    $modalInstance.close();
+                    $rootScope.$broadcast('MessagesChanged');
+                } else {
+                    switch (data.error.errortype) {
+                        case 'AUTHENTICATE_INVALID_CREDENTIALS':
+                            showAlert('error', 'Invalid credentials!');
+                            break;
+                        default:
+                            showAlert('error', 'Unknown error!');
+                    }
+                }
+
+            }, function(status) {
+                showAlert('error', status);
             });
         };
 
         $scope.onFileSelect = function ($files){
 
-            $scope.message.images = [];
+            //$scope.message.images = [];
             function setupReader(file) {
                 var name = file.name;
                 var reader = new FileReader();
@@ -169,5 +190,9 @@ angular.module('mNewPost', ['mServices'])
 
         };
 
+        $scope.deleteImage = function (index){
+
+            $scope.message.images.splice(index,1);
+        };
 
     }]);
