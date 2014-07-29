@@ -178,12 +178,25 @@ angular.module('mNewPost', ['mServices'])
                     var image = {};
                     image.name = name;
                     image.image = reader.result.split('base64,')[1];
-                    $scope.message.images.push({image: image});
+                    if ($scope.message.images.length < 10) {
+                        $scope.message.images.push({image: image});
+                    }
                 };
                 reader.readAsDataURL(file);
             }
 
-            for (var i = 0; i < $files.length; i++) { setupReader($files[i]); }
+            for (var i = 0; i < $files.length; i++) {
+                if ($scope.message.images.length + i > 10){
+                    showAlert('error', 'Only 10 images allowed. Too many images: ' + ($scope.message.images.length + $files.length));
+                    break;
+                }
+                var file = $files[i];
+                if (file.size < 9000000){
+                    setupReader(file);
+                } else {
+                    showAlert('error', 'Image too big: ' + file.name);
+                }
+            }
 
 
         };

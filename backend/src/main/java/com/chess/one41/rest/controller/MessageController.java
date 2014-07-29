@@ -14,17 +14,21 @@ import com.chess.one41.rest.model.Response;
 import com.chess.one41.rest.model.TokenEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Token
 @RestController
 @RequestMapping("/rest/message")
 public class MessageController {
+
+    Logger log = Logger.getLogger(MessageController.class);
 
     @Autowired
     private MessageService messageService;
@@ -65,11 +69,21 @@ public class MessageController {
 
         List<Image> images = new ArrayList<Image>();
         if (messageDto.getImages() != null) {
-            for (ImageDto imageDto : messageDto.getImages()) {
-                Image image = new Image();
-                BeanUtils.copyProperties(imageDto, image);
-                image.setMessage(message);
-                images.add(image);
+            for (int i = 0; i < messageDto.getImages().size(); i++) {
+                if (i > 10){
+                    log.warn("Image count limit (10) exceeded for file list of size: " + messageDto.getImages().size());
+                    break;
+                }
+                ImageDto imageDto = messageDto.getImages().get(i);
+                if (imageDto.getImage().length < 9000000) {
+                    Image image = new Image();
+                    BeanUtils.copyProperties(imageDto, image);
+                    image.setMessage(message);
+                    images.add(image);
+                } else {
+                    log.warn("Image size limit exceeded for file: " + imageDto.getName());
+                    // TODO what to do here? exception?
+                }
             }
         }
         message.setImages(images);

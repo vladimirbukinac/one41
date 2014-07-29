@@ -142,7 +142,7 @@ describe('Controller: NewPostCtrl', function () {
     });
 
     it('onFileSelect test:', function () {
-        scope.onFileSelect([{name: 'file name'}]);
+        scope.onFileSelect([{name: 'file name', size: 100000}]);
         expect(scope.message.images).toBeDefined();
         expect(scope.message.images.length).toEqual(1);
         expect(scope.message.images[0].image.image).toEqual('file contents');
