@@ -2,7 +2,7 @@
 
 describe('Controller: PostsCtrl', function () {
 
-    var PostsCtrl, scope, log, interval, listOfPosts, q, rootScope, deferred, promise, data, status;
+    var PostsCtrl, scope, log, interval, listOfPosts, q, rootScope, deferred, promise, data, status, userService;
 
     //beforeEach(module('ngCookies'));
     beforeEach(module('feProperties'));
@@ -25,6 +25,7 @@ describe('Controller: PostsCtrl', function () {
             return {
                 profile: user.profile,
                 broadcastUserStatusChanged: function () {
+                    rootScope.$broadcast('UserStatusChanged');
                 },
                 getUserProfile: function () {
                     return user.profile;
@@ -125,24 +126,23 @@ describe('Controller: PostsCtrl', function () {
         });
     });
 
-    // Initialize the controller and a mock scope
-    beforeEach(inject(function ($rootScope, $q) {
+    beforeEach(inject(function ($q, $rootScope, $controller, $log, $interval, UserServiceMock, PostsFactoryMock, feDateServiceMock, FrontendProperties, listOfPostsMock) {
         q = $q;
         rootScope = $rootScope;
         deferred = q.defer();
         promise = deferred.promise;
-    }));
-
-    beforeEach(inject(function ($controller, $log, $interval, UserServiceMock, PostsFactoryMock, feDateServiceMock, FrontendProperties, listOfPostsMock) {
         scope = rootScope.$new();
         log = $log;
         interval = $interval;
+        spyOn(scope, '$on').andCallThrough();
+        userService = UserServiceMock;
+
         PostsCtrl = $controller('PostsCtrl', {
             $rootScope: rootScope,
             $scope: scope,
             $log: log,
             $interval: interval,
-            UserService: UserServiceMock,
+            UserService: userService,
             PostsFactory: PostsFactoryMock,
             feDateService: feDateServiceMock,
             FrontendProperties: FrontendProperties
@@ -267,5 +267,11 @@ describe('Controller: PostsCtrl', function () {
         expect(scope.status).toBe(500);
         expect(scope.showFeedback).toBe(true);
         expect(scope.alertType).toBe('error');
+    });
+
+    it('$on UserStatusChanged event:', function(){
+        userService.getUser().broadcastUserStatusChanged();
+
+        expect(scope.$on).toHaveBeenCalledWith('UserStatusChanged', jasmine.any(Function));
     });
 });

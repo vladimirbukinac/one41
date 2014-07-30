@@ -4,9 +4,9 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
     .config(function () {
     })
 
-    .directive('initData', [/*'$scope', 'UserService', */function (/*$scope, UserService*/) {
+    .directive('initData', ['$rootScope', function ($rootScope) {
         return function () {
-            //$scope.user = UserService.getUser();
+            $rootScope.$broadcast('UserStatusChanged');
         };
     }])
 
@@ -22,12 +22,6 @@ angular.module('mMenu', ['ui.bootstrap', 'mServices', 'mLogin'])
     }])
 
     .controller('LoginCtrl', ['$scope', '$modal', '$log', '$timeout', 'UserService', function ($scope, $modal, $log, $timeout, UserService) {
-        var initUser;
-
-        // this is not nice solution
-        initUser = $timeout(function(){
-            $scope.user = UserService.getUser().getUserProfile();
-        }, 100);
 
         $scope.login = function () {
             var loginModalInstance = $modal.open({
