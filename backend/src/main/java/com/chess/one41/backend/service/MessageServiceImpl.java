@@ -21,11 +21,14 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, Long> implem
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TimeService timeService;
+
     @Override
-    public void createEntity(Message message) throws EntityNotFoundException {
-        User user = userService.getEntity(message.getUserId());
+    public void createEntity(Message message) {
+        User user = userService.findEntity(message.getUserId());
         message.setUser(user);
-        message.setCreationDate(new Date());
+        message.setCreationDate(timeService.getCurrentTime());
 
         super.createEntity(message);
     }
@@ -36,14 +39,16 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, Long> implem
     }
 
     @Override
-    public Message getMessageWithImages(Long messageId) throws EntityNotFoundException {
-        getEntity(messageId); // check if message exists
+    public Message getMessageWithImages(Long messageId) {
         return messageDao.getMessageWithImages(messageId);
     }
 
     @Override
     public void deleteMessage(Long messageId, Long userId) throws EntityNotFoundException, IllegalOperationException {
-        Message message = getEntity(messageId);
+        Message message = findEntity(messageId);
+        if (message == null) {
+            throw new EntityNotFoundException();
+        }
         if (!message.getUser().getId().equals(userId)) {
             throw new IllegalOperationException();
         }

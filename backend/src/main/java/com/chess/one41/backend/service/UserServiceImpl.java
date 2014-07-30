@@ -19,29 +19,16 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
     }
 
     @Override
-    public User createOrUpdateUser(User user) throws IllegalOperationException {
+    public void checkUsernameAndEmailUnique(User user) throws IllegalOperationException {
+        User userWithUsername = userDao.getUserByUsername(user.getUsername());
         User userWithEmail = userDao.getUserByEmail(user.getEmail());
 
-        boolean uniqueEmail = true;
-        if (userWithEmail != null) {
-            if (user.getId() == null) {
-                uniqueEmail = false;
-            } else if (!userWithEmail.getId().equals(user.getId())) {
-                uniqueEmail = false;
-            }
-        }
-
-        if (!uniqueEmail) {
+        if (userWithUsername != null && !userWithUsername.getId().equals(user.getId())) {
             throw new IllegalOperationException();
         }
-
-        if(user.getId() == null) {
-            userDao.create(user);
-        } else {
-            userDao.update(user);
+        if (userWithEmail != null && !userWithEmail.getId().equals(user.getId())) {
+            throw new IllegalOperationException();
         }
-
-        return user;
     }
 
     @Override

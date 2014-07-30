@@ -16,6 +16,7 @@ public class UserDaoTest extends BaseIntegrationTest {
         User existingUser = new User();
         existingUser.setUsername("alekdov");
         existingUser.setPassword("pass");
+        existingUser.setEmail("email@email.com");
         userDao.create(existingUser);
 
         User authenticatedUser = userDao.authenticateUser(existingUser.getUsername(), existingUser.getPassword());
@@ -34,10 +35,12 @@ public class UserDaoTest extends BaseIntegrationTest {
         String emailNonExisting = "email3@email.com";
 
         User user1 = new User();
+        user1.setUsername("user1");
         user1.setEmail(email1);
         userDao.create(user1);
 
         User user2 = new User();
+        user2.setUsername("user2");
         user2.setEmail(email2);
         userDao.create(user2);
 
@@ -48,5 +51,30 @@ public class UserDaoTest extends BaseIntegrationTest {
         User user = userDao.getUserByEmail(email1);
         Assert.assertNotNull(user);
         Assert.assertEquals(user.getEmail(), email1);
+    }
+
+    @Test
+    public void getUserByUsernameTest() {
+        String username1 = "username1";
+        String username2 = "username2";
+        String usernameNonExisting = "nonExistingUsername";
+
+        User user1 = new User();
+        user1.setUsername(username1);
+        user1.setEmail("email1@email.com");
+        userDao.create(user1);
+
+        User user2 = new User();
+        user2.setUsername(username2);
+        user2.setEmail("email2@email.com");
+        userDao.create(user2);
+
+        // Non existing username
+        Assert.assertNull(userDao.getUserByUsername(usernameNonExisting));
+
+        // Get user by username
+        User user = userDao.getUserByUsername(username1);
+        Assert.assertNotNull(user);
+        Assert.assertEquals(user.getUsername(), username1);
     }
 }

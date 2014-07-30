@@ -47,7 +47,8 @@ public class UserController {
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
 
-        userService.createOrUpdateUser(user);
+        userService.checkUsernameAndEmailUnique(user);
+        userService.createEntity(user);
 
         return null;
     }
@@ -57,7 +58,8 @@ public class UserController {
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
 
-        userService.createOrUpdateUser(user);
+        userService.checkUsernameAndEmailUnique(user);
+        userService.updateEntity(user);
 
         return null;
     }

@@ -5,19 +5,19 @@
 
     <p><b class="header">Register new user</b></p>
 
-    <form name="RegisterForm">
+    <form name="RegisterForm" novalidate>
         <table width="250px" >
             <tr style="height: 40px">
                 <td width="60px">Email:</td>
-                <td width="100px"><input type="text" name="email" id="email" ng-model="user.email" placeholder="Email" focus-me="focusInput" required></td>
+                <td width="100px"><input type="text" name="email" id="email" ng-model="user.email" placeholder="Email" focus-me="focusInput" required="true"></td>
             </tr>
             <tr style="height: 40px">
                 <td width="60px">Username:</td>
-                <td width="100px"><input type="text" name="username" id="username" ng-model="user.username" placeholder="Username" required></td>
+                <td width="100px"><input type="text" name="username" id="username" ng-model="user.username" placeholder="Username" required="true"></td>
             </tr>
             <tr style="height: 40px">
                 <td>Password:</td>
-                <td><input name="password" placeholder="Password" type="password" ng-model="user.password" required></td>
+                <td><input name="password" placeholder="Password" type="password" ng-model="user.password" required="true"></td>
             </tr>
             <tr style="height: 40px">
                 <td>First name:</td>
@@ -31,8 +31,11 @@
                 <td>Picture URL:</td>
                 <td><input name="pictureUrl" placeholder="pictureUrl" ng-model="user.pictureUrl"></td>
             </tr>
-            <tr style="height: 40px">
-                <td align="center" colspan="2"><button class="btn-success" ng-click="register()">Register</button>&nbsp;&nbsp;<button class="btn-default" ng-click="cancel()">Cancel</button></td>
+            <tr style="height: 40px" ng-show="isUserLogged()">
+                <td align="center" colspan="2"><button type="submit" class="btn btn-primary" ng-disabled="RegisterForm.$invalid" ng-click="update()">Update</button>&nbsp;&nbsp;<button class="btn btn-default" ng-click="cancel()">Cancel</button></td>
+            </tr>
+            <tr style="height: 40px" ng-hide="isUserLogged()">
+                <td align="center" colspan="2"><button type="submit" class="btn btn-primary" ng-disabled="RegisterForm.$invalid" ng-click="register()">Register</button>&nbsp;&nbsp;<button class="btn btn-default" ng-click="cancel()">Cancel</button></td>
             </tr>
         </table>
     </form>

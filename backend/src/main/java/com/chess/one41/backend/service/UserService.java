@@ -7,5 +7,5 @@ public interface UserService extends GenericService<User, Long> {
 
     User authenticateUser(String username, String password);
 
-    User createOrUpdateUser(User user) throws IllegalOperationException;
+    void checkUsernameAndEmailUnique(User user) throws IllegalOperationException;
 }

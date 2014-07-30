@@ -25,4 +25,12 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
         return (User) criteria.uniqueResult();
     }
+
+    @Override
+    public User getUserByUsername(String username) {
+        Criteria criteria = createCriteria();
+        criteria.add(Restrictions.eq(User.USERNAME, username));
+
+        return (User) criteria.uniqueResult();
+    }
 }

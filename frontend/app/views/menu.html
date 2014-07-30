@@ -14,12 +14,12 @@
                 <label style="float: left;" ng-show="isUserLogged()">&nbsp;{{user.firstName}}&nbsp;{{user.lastName}}</label>
             </div>
             <div>
-                <button style="float: left; width: 75px" class="btn-success" ng-click="register()" ng-hide="isUserLogged()">Register</button>
+                <button style="float: left; width: 75px" class="btn btn-success" ng-click="register()" ng-hide="isUserLogged()">Register</button>
             </div>
         </div>
         <div style="float: right; width: 400px" align="center">
             <button class="btn btn-default" ng-show="isUserLogged()" ng-controller="NewPostCtrl" ng-click="newPost()">New message</button>
-            <button class="btn btn-default" ng-show="isUserLogged()" ng-controller="ProfileCtrl">Profile</button>
+            <button class="btn btn-default" ng-controller="ProfileCtrl" ng-show="isUserLogged()" ng-click="showProfile()">Profile</button>
         </div>
     </div>
     <div class="datetime" align="right" ng-controller="DateTimeCtrl">
