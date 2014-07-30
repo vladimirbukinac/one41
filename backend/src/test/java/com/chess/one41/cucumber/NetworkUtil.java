@@ -1,5 +1,6 @@
 package com.chess.one41.cucumber;
 
+import com.chess.one41.rest.model.TokenEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -94,5 +95,14 @@ public class NetworkUtil {
         } catch (JsonProcessingException e) {
             return null;
         }
+    }
+
+    public static String generateJSONString(Object object, String token) {
+        JSONObject jsonMessageDto = new JSONObject(object);
+        jsonMessageDto.put("token", token);
+        JSONObject jsonMessageDtoWrapped = new JSONObject();
+        jsonMessageDtoWrapped.put("message", jsonMessageDto);
+
+        return jsonMessageDtoWrapped.toString();
     }
 }
