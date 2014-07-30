@@ -22,7 +22,10 @@ public class MessageDaoImpl extends GenericDaoImpl<Message, Long> implements Mes
     @Override
     public Message getMessageWithImages(Long messageId) {
         Message message = findById(messageId);
-        message.getImages().iterator(); // lazy-load image collection
+
+        if (message.getImages() != null) {
+            message.getImages().iterator(); // load (lazy-loaded) image collection
+        }
         return message;
     }
 }
