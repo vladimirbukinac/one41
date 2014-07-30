@@ -21,11 +21,14 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, Long> implem
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TimeService timeService;
+
     @Override
     public void createEntity(Message message) {
         User user = userService.findEntity(message.getUserId());
         message.setUser(user);
-        message.setCreationDate(new Date());
+        message.setCreationDate(timeService.getCurrentTime());
 
         super.createEntity(message);
     }
