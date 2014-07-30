@@ -10,6 +10,8 @@ public interface MessageService extends GenericService<Message, Long> {
 
     List<Message> getLatestMessages();
 
+    List<Message> getLatestMessagesAfterTime(Long dateTime);
+
     Message getMessageWithImages(Long messageId);
 
     void deleteMessage(Long messageId, Long userId) throws EntityNotFoundException, IllegalOperationException;

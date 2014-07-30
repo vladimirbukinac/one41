@@ -3,7 +3,7 @@ package com.chess.one41.backend.dao;
 import com.chess.one41.backend.entity.Image;
 import com.chess.one41.backend.entity.Message;
 import com.chess.one41.backend.entity.User;
-import com.chess.one41.backend.service.dao.ImageDao;
+//import com.chess.one41.backend.service.dao.ImageDao;
 import com.chess.one41.backend.service.dao.MessageDao;
 import com.chess.one41.backend.service.dao.UserDao;
 import org.junit.Assert;

@@ -8,5 +8,7 @@ public interface MessageDao extends GenericDao<Message, Long> {
 
     List<Message> getLatestMessages();
 
+    List<Message> getLatestMessagesAfterTime(Long dateTime);
+
     Message getMessageWithImages(Long messageId);
 }

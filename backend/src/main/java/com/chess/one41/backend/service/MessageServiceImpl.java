@@ -39,6 +39,11 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, Long> implem
     }
 
     @Override
+    public List<Message> getLatestMessagesAfterTime(Long dateTime) {
+        return messageDao.getLatestMessagesAfterTime(dateTime);
+    }
+
+    @Override
     public Message getMessageWithImages(Long messageId) {
         return messageDao.getMessageWithImages(messageId);
     }

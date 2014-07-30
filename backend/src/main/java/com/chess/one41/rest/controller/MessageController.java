@@ -8,10 +8,7 @@ import com.chess.one41.backend.service.exception.EntityNotFoundException;
 import com.chess.one41.backend.service.exception.ServiceException;
 import com.chess.one41.rest.Session;
 import com.chess.one41.rest.Token;
-import com.chess.one41.rest.model.ImageDto;
-import com.chess.one41.rest.model.MessageDto;
-import com.chess.one41.rest.model.Response;
-import com.chess.one41.rest.model.TokenEntity;
+import com.chess.one41.rest.model.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.log4j.Logger;
@@ -60,6 +57,24 @@ public class MessageController {
         messageDto.setUserId(message.getUser().getId());
         messageDto.setImages(new ArrayList<ImageDto>());
         return messageDto;
+    }
+
+    @RequestMapping(value="/latest-after-time", method= {RequestMethod.GET, RequestMethod.POST})
+    public Response getMessagesAfterTime(@RequestBody LatestAfterTimeDto latestAfterTimeDto) {
+        List<Message> latestMessages = messageService.getLatestMessagesAfterTime(latestAfterTimeDto.getDateTime());
+
+        if (latestMessages == null) {
+            return null;
+        }
+
+        List<MessageDto> latestMessagesDto = new ArrayList<MessageDto>();
+        for(int i = 0; i < latestMessages.size(); i++){
+            Message message = latestMessages.get(i);
+            MessageDto messageDto = getMessageDto(message);
+            latestMessagesDto.add(messageDto);
+        }
+
+        return new ResponseListWrapper(latestMessagesDto);
     }
 
     @RequestMapping(value="/create", method= {RequestMethod.GET, RequestMethod.POST})

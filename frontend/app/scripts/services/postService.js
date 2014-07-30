@@ -9,10 +9,13 @@ angular.module('mServices')
 
         Posts.prototype.getPosts = function (token) {
             var deferred = $q.defer();
+            //var dateTime = new Date();
             var data = {token: {token: token}};
+            //var data = {latestAfter: {token: token, dateTime: dateTime.getTime() - 86000000}};
 
             var self = this;
 
+            //$http.post('/rest/message/latest-after-time', data)
             $http.post('/rest/message/latest', data)
                 .success(function (data, status) {
                     if (angular.equals(data.error, undefined)) {
